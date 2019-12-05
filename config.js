@@ -16,7 +16,7 @@ ZingConfig.prototype.writeConfig = function(config) {
   });
 }
 
-ZingConfig.prototype.init = function() {
+ZingConfig.prototype.init = function(callback) {
   fs.readFile(CONFIG_PATH, function (err, data) {
     if (err) {
        console.info('配置文件不存在，正在创建...')
@@ -25,12 +25,16 @@ ZingConfig.prototype.init = function() {
           console.error('创建文件失败，请检查权限，UNIX 系统以管理员「sudo」运行！ ')
           return console.error(err);
         } else {
-          console.log("配置文件创建成功！");
+          console.info('初始化成功 👌');
+          callback();
         }
         
       });
+    } else {
+      callback();
     }
   });
+  
 }
 
 //重置配置文件：删除 -> 重新创建
@@ -71,6 +75,7 @@ ZingConfig.prototype.getCookie = function(type) {
   //同步较好
   var data = fs.readFileSync(CONFIG_PATH,'utf-8');
   let Config = JSON.parse(data.toString());
+  console.log(Config[type])
   return Config[type];
 }
 // new ZingConfig().getCookie();
