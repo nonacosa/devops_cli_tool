@@ -6,12 +6,16 @@ const { table } = require('table')
 const Table2 = require('cli-table2')
 const toolsInfo = require('./package.json')
 
-const inquirer = require('./inquirer')
+const ZingInquirer = require('./inquirer')
+const ZingGit = require('./git')
+const ZingConf = require('./config')
 
 // 初始化commander
 program
   .version(toolsInfo.version, '-v, --version')
   .usage('<cmd> [option]')
+
+ZingConf.init();
 
 let table2 = new Table2({
   head: ['功能','命令', '缩写'],
@@ -107,17 +111,17 @@ function getResult(queryData, articleType) {
   } else {
     url = 'https://wekan'
   }
-  
+  ZingConf.checkCookie();
   // 网络请求
   request.get(url)
     .query(queryData)
-    .set('Cookie', 'lang=zh-cn; device=desktop; theme=default; preBranch=0; bugModule=0; qaBugOrder=id_desc; lastProject=1; moduleBrowseParam=0; preProjectID=1; projectTaskOrder=id_desc; selfClose=0; productBrowseParam=9; keepLogin=on; za=zhuangwenda; lastProduct=49; preProductID=49; zp=422adbe139a2d5a846a1af2377d5e8da159d0a7d; selfClose=1; windowHeight=1217; windowWidth=1171; zentaosid=edf0vi8v07bln97tqo2gnusgt5')
+    .set('Cookie', ZingConf.getCookie())
     .then(res => {
       let info = JSON.parse(JSON.parse(res.text).data)
       let bugs = info.bugs
       for (let i = 0; i < bugs.length; i++) {
          
-        tableData[i] = [i, bugs[i].id, bugs[i].openedBy, bugs[i].title, `http://39.104.96.233:60888/zentao/bug-view-${bugs[i].id}.html`]
+        tableData[i] = [i+1, bugs[i].id, bugs[i].openedBy, bugs[i].title, `http://39.104.96.233:60888/zentao/bug-view-${bugs[i].id}.html`]
       }
     }).then(() => {
       config = {
@@ -145,11 +149,12 @@ function getResult(queryData, articleType) {
       tableData.unshift(['序号', 'BUG编号', '创建人', '标题', '链接（Command/Ctrl+鼠标左键链接可点击）']); // 注意数组索引, [0,1,2..]
       output = table(tableData, config)
       console.log(output)
-      inquirer.inputBugIndex( index => {
+      ZingInquirer.inputBugIndex( index => {
         let bug = tableData[~~index];
-        let bugId =  
-        console.log("您选择的 BUG：")
-        console.log(bug)
+        let bugId =  bug[1];
+        let bugName =  bug[3];
+        ZingGit.checkoutBranch(`fix-bug-${bugId}`,null);
+        console.log("您选择的 BUG 编号：%s  >>> %s 👌",bugId,bugName)
       });
     })
     .catch(err => {

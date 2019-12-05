@@ -3,7 +3,9 @@
 const inquirer = require('inquirer');
 var chalkPipe = require('chalk-pipe');
 
-function list() {
+function ZingInquirer () {}
+
+ZingInquirer.prototype.list = function() {
   inquirer.prompt([
     {
       type: 'list',
@@ -36,7 +38,8 @@ function list() {
   })
 }
 
-function longList() {
+
+ZingInquirer.prototype.longList = function() {
   var choices = Array.apply(0, new Array(26)).map((x, y) => String.fromCharCode(y + 65));
   choices.push('Multiline option \n  super cool feature');
   choices.push({
@@ -66,8 +69,8 @@ function longList() {
     });
 }
 
-
-function inputBugIndex(callback) {
+// BUG 编号 「需求可重用」
+ZingInquirer.prototype.inputBugIndex = function(callback) {
   var questions = [
     {
       type: 'input',
@@ -86,13 +89,25 @@ function inputBugIndex(callback) {
   ];
   
   inquirer.prompt(questions).then(answers => {
-    console.log(JSON.stringify(answers, null, '  '));
     callback(answers.index);
   });
 }
 
-module.exports  =  {
-    list : list,
-    inputBugIndex : inputBugIndex,
-    longList : longList
+// 设置相关 Cookie
+ZingInquirer.prototype.setCookie = function(type,callback) {
+  var questions = [
+    {
+      type: 'input',
+      name: 'cookie',
+      message: `检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie :`,
+    }
+  ];
+  inquirer.prompt(questions).then(answers => {
+    callback(answers.cookie);
+  });
 }
+
+ 
+
+
+module.exports = new ZingInquirer();
