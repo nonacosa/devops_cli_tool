@@ -1,0 +1,27 @@
+{
+  "name": "zinglabs",
+  "version": "1.0.0",
+  "description": "The command Tools of zinglabs devops !",
+  "main": "index.js",
+  "scripts": {
+    "test": "dev"
+  },
+  "bin": {
+    "juejin": "./index.js"
+  },
+  "keywords": [
+    "zinglabs",
+    "tools",
+    "devops"
+  ],
+  "author": "sis.nonacosa",
+  "license": "MIT",
+  "dependencies": {
+    "chalk-pipe": "^3.0.0",
+    "cli-table2": "^0.2.0",
+    "commander": "^2.13.0",
+    "inquirer": "^7.0.0",
+    "superagent": "^3.8.2",
+    "table": "^4.0.2"
+  }
+}
