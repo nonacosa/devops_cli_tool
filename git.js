@@ -21,7 +21,7 @@ ZingGit.prototype.gitInfo = function() {
   git.listRemote(['--get-url'], (err, data) => {
       if (!err) {
           console.info('当前工作目录：>>> %s   👌' , __dirname );
-          console.info('当前远程空间：>>> %s   👌' , data);
+          console.info('当前远程空间：>>> %s   ' , data);
           // git.addRemote('origin', data, (err,addInfo) => {
           //   console.info('addInfo >>> ' + addInfo);
           // })
@@ -38,7 +38,7 @@ ZingGit.prototype.checkoutBranch = function(branch,origin) {
   git.checkoutBranch(branch,origin, function (err, result) {
     if(!err) {
       console.info('自动为您从 &s 创建并切换为分支：%s 👌',origin,branch)
-      new ZingGit().gitInfo();
+      // new ZingGit().gitInfo();
       console.warn('请尽量确保一个分支只解决一个问题 ! ')
     }
   });

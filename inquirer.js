@@ -99,7 +99,7 @@ ZingInquirer.prototype.setCookie = function(type,callback) {
     {
       type: 'input',
       name: 'cookie',
-      message: `检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie :`,
+      message: ` \n 检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie ! \n 或手动在 /usr/local/zingGit-config.json 内进行配置 :`,
     }
   ];
 

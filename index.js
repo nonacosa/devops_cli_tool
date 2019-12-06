@@ -18,19 +18,21 @@ program
 ZingConf.init(ok => {
 
   let table2 = new Table2({
-    head: ['功能','命令', '缩写'],
-    colWidths: [30,10,10 ]
+    head: ['功能','命令', '缩写','例子'],
+    colWidths: [35,10,10,40]
   })
   
   table2.push(
-    ['我要完成 : 功能/需求','feature','-f' ],
-    [ '我要解决 : BUG','bug','-b']
+    ['查看帮助','--help','-h' ,'zingGit -h 或 zingGit --help'],
+    ['查看 「 wekan 」列表 (敬请期待)','feature','-f' ,'zingGit -f 或 zingGit feature'],
+    ['查看 「 禅 道 」列表 ','bug','-b','zingGit -b 或 zingGit bug'],
+    ['可以自动填写 commit 信息','commit','-c','zingGit -c 或 zingGit commit']
   )
   
   program.on('--help', function () {
-    console.log('')
-    console.log('命令列表')
-    console.log(table2.toString())
+    console.info('')
+    console.info('命令列表')
+    console.info(table2.toString())
   })
   
   // 存储数据的表格
@@ -51,8 +53,7 @@ ZingConf.init(ok => {
   
   // 添加可选指令
   program
-    .option('-h --hot [dir]', 'an dir argument')
-    .option('-n --new [dir]', 'an dir argument')
+    .option('-b --bug ')
     .parse(process.argv)
   
   /***
@@ -67,38 +68,45 @@ ZingConf.init(ok => {
      * 下方new参数同理
      */
     if (program.bug !== true) {
-      switchDir(program.hot)
+      switchType(program.hot)
     }
     getResult(queryData, 'bug')
   }
   
   if (program.new) {
     if (program.new !== true) {
-      switchDir(program.new)
+      switchType(program.new)
     }
     getResult(queryData, 'new')
   }
   
-  // 添加自定义命令
+  // bug 命令
   program
-    .command('hot <dir>')
-    .description('获取最热文章列表')
-    .action(function (dir, otherDirs) {
-      switchDir(dir)
+    .command('bug')
+    .description('查看禅道我的 BUG 列表')
+    .action(function (command) {
       getResult(queryData, 'bug')
     })
-  
+  // 提交 命令
   program
-    .command('new <dir>')
-    .description('获取最新文章列表')
-    .action(function (dir, otherDirs) {
-      switchDir(dir)
-      getResult(queryData, 'new')
+    .command('commit')
+    .description('自动按规则 commit  修改')
+    .action(function (command) {
+      console.log(command)
     })
   
-  if (!process.argv[2]) {
-    switchDir(program.hot)
-    getResult(queryData, 'bug')
+  // program
+  //   .command('new <dir>')
+  //   .description('获取最新需求列表')
+  //   .action(function (dir, otherDirs) {
+  //     switchType(dir)
+  //     getResult(queryData, 'new')
+  //   })
+  
+    // 参数不满足两个默认去禅道找bug
+  if (process.argv.length === 0) {
+    console.warn('请按照要求输入参数，帮助请看 --help : \n');
+    console.info(table2.toString())
   }
   
   program.parse(process.argv)
@@ -163,7 +171,7 @@ ZingConf.init(ok => {
       })
   }
   
-  function switchDir(dir) {
+  function switchType(type) {
       // queryData.xxx
   }
   
