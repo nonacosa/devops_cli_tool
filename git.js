@@ -1,6 +1,8 @@
 'use strict';
 //where the workingDirPath is optional, defaulting to the current directory.
 const git = require('simple-git')();
+const ZingInquirer = require('./inquirer')
+const inquirer = require('inquirer')
 
 function ZingGit () {}
 
@@ -46,18 +48,41 @@ ZingGit.prototype.checkoutBranch = function(branch,origin) {
 
 //git status
 ZingGit.prototype.status = function() {
+  let checkArr = [];
   let fileArr = [];
+ 
+  function eachCheck(checkArr,changeArr,type) {
+    if(changeArr.length > 0) {
+      checkArr.push(new inquirer.Separator(` = ${type} = `))
+      for(var i = 0; i< changeArr.length; i++) {
+        checkArr.push({name : changeArr[i], checked : true})
+      }
+    }
+  }
+
   git.status(function (err, result) {
     if(!err) {
+
       for(var i = 0; i< result.files.length; i++) {
         fileArr.push(__dirname + '/' + result.files[i].path)
       }
-      console.log('----');
-      console.log(result);
-      console.log('----');
-      console.log(result.files);
-      new ZingGit().add(fileArr);
-      new ZingGit().commit(fileArr);
+ 
+      eachCheck(checkArr,result.not_added,"当前新建的文件");
+      eachCheck(checkArr,result.conflicted,"当前冲突的文件");
+      eachCheck(checkArr,result.created,"当前 created 的文件");
+      eachCheck(checkArr,result.deleted,"当前删除的文件");
+      eachCheck(checkArr,result.modified,"当前修改的文件");
+      eachCheck(checkArr,result.renamed,"当前改名的文件");
+      ZingInquirer.checkbox(checkArr,files => {
+        let toCommitFilesPathArray = [];
+        console.log(files)
+        for(var i = 0; i< files.length; i++) {
+          toCommitFilesPathArray.push(__dirname + '/' + files[i]);
+        }
+        new ZingGit().add(toCommitFilesPathArray);
+        new ZingGit().commit(toCommitFilesPathArray);
+      });
+
     }
   });
 }
