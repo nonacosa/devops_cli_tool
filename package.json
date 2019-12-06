@@ -1,5 +1,5 @@
 {
-  "name": "zinglabs",
+  "name": "zing-git",
   "version": "1.0.0",
   "description": "The command Tools of zinglabs devops !",
   "main": "index.js",
@@ -11,6 +11,7 @@
   },
   "keywords": [
     "zinglabs",
+    "zing-git",
     "tools",
     "devops"
   ],
