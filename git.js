@@ -4,6 +4,8 @@ const git = require('simple-git')();
 const ZingInquirer = require('./inquirer')
 const inquirer = require('inquirer')
 
+let currentBugId = '';
+
 function ZingGit () {}
 
 // rebase 比较适合公司场景 http://gitbook.liuhui998.com/4_2.html
@@ -33,12 +35,13 @@ ZingGit.prototype.gitInfo = function() {
 
      
 //git checkout -b 本地分支名 origin/远程分支名
-ZingGit.prototype.checkoutBranch = function(branch,origin) {
+ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
   if(origin == undefined || origin === null) {
     origin = 'origin/dev'
   }
   git.checkoutBranch(branch,origin, function (err, result) {
     if(!err) {
+      currentBugId = bugId;
       console.info('自动为您从 &s 创建并切换为分支：%s 👌',origin,branch)
       // new ZingGit().gitInfo();
       console.warn('请尽量确保一个分支只解决一个问题 ! ')
@@ -47,7 +50,7 @@ ZingGit.prototype.checkoutBranch = function(branch,origin) {
 }    
 
 //git status
-ZingGit.prototype.status = function() {
+ZingGit.prototype.checkAndCommit = function(msg) {
   let checkArr = [];
   let fileArr = [];
  
@@ -80,7 +83,7 @@ ZingGit.prototype.status = function() {
           toCommitFilesPathArray.push(__dirname + '/' + files[i]);
         }
         new ZingGit().add(toCommitFilesPathArray);
-        new ZingGit().commit(toCommitFilesPathArray);
+        new ZingGit().commit(toCommitFilesPathArray,msg);
       });
 
     }
@@ -89,11 +92,8 @@ ZingGit.prototype.status = function() {
 
 //git add
 ZingGit.prototype.add = function(fileArr) {
-  console.log(fileArr)
   git.add(fileArr,function (err, result) {
-    
-    console.log(err)
-     
+
     if(!err) {
       console.log(result)
     }
@@ -102,7 +102,7 @@ ZingGit.prototype.add = function(fileArr) {
 //git commit
 ZingGit.prototype.commit = function(fileArr,msg) {
   console.log(fileArr)
-  git.commit("git-js auto commit test !", fileArr, null,function (err, result) {
+  git.commit(msg || `fix-bug-${currentBugId}  http://39.104.96.233:60888/zentao/bug-view-${currentBugId}.html `, fileArr, null,function (err, result) {
     if(!err) {
       console.log(result)
     }else {
@@ -111,7 +111,7 @@ ZingGit.prototype.commit = function(fileArr,msg) {
   });
 }
 
-new ZingGit().status();
+// new ZingGit().status();
 module.exports = new ZingGit();
      
 

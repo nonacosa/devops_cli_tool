@@ -68,12 +68,13 @@ function getResult(queryData, articleType) {
         let bug = tableData[~~index];
         let bugId =  bug[1];
         let bugName =  bug[3];
-        ZingGit.checkoutBranch(`fix-bug-${bugId}`,null);
+        ZingGit.checkoutBranch(`fix-bug-${bugId}`,null,bugId);
         console.log("您选择的 BUG 编号：%s  >>> %s 👌",bugId,bugName)
       });
     })
     .catch(err => {
-      console.error('err' + err)
+      console.error(err)
+      console.error('cookie 可能已经过期，请重新调整！')
     })
 }
 

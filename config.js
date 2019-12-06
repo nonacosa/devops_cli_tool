@@ -74,7 +74,6 @@ ZingConfig.prototype.getCookie = function(type) {
   //同步较好
   var data = fs.readFileSync(CONFIG_PATH,'utf-8');
   let Config = JSON.parse(data.toString());
-  console.log(Config[type])
   return Config[type];
 }
 // new ZingConfig().getCookie();

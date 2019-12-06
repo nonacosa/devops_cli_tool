@@ -8,7 +8,7 @@ const ZingCMD = require('./cmd')
 
 ZingConf.init(ok => {
 
-  console.info(`\n\n\n\n      ZGIT   \n\n\n`);
+  console.info(`\n\n\n\n      zing-git   \n\n\n`);
   
   ZingCMD.listening();
   

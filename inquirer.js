@@ -132,6 +132,5 @@ ZingInquirer.prototype.setCookie = function(type,callback) {
 }
 
  
-new ZingInquirer().checkbox();
 
 module.exports = new ZingInquirer();

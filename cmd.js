@@ -3,6 +3,7 @@ const program = require('commander')
 const Table2 = require('cli-table2')
 const toolsInfo = require('./package.json')
 const ZingFetch = require('./fetch')
+const ZingGit = require('./git')
 function ZingCMD () {}
 
 let table2 = new Table2({
@@ -71,7 +72,7 @@ ZingCMD.prototype.listening = function() {
     .command('commit')
     .description('自动按规则 commit  修改')
     .action(function (command) {
-      console.log(command)
+      ZingGit.checkAndCommit()
     })
   
   // program
