@@ -101,15 +101,36 @@ ZingGit.prototype.add = function(fileArr) {
 }
 //git commit
 ZingGit.prototype.commit = function(fileArr,msg) {
-  console.log(fileArr)
-  git.commit(msg || `fix-bug-${currentBugId}  http://39.104.96.233:60888/zentao/bug-view-${currentBugId}.html `, fileArr, null,function (err, result) {
+  new ZingGit().branchInfo(Id => {
+    git.commit(msg || `fix-bug-${Id}  http://39.104.96.233:60888/zentao/bug-view-${Id}.html `, fileArr, null,function (err, result) {
     if(!err) {
       console.log(result)
     }else {
       console.log(err)
     }
   });
+  })
+  
 }
+
+//git commit
+ZingGit.prototype.branchInfo = function(callback) {
+  git.branch(null,(err,data) => {
+    if(!err) {
+      let currentBranch = data.current;
+      let bugOrFeatureId = '';
+      if(currentBranch.indexOf('fix') > -1) {
+        bugOrFeatureId = 'fix-bug-3856'.substring('fix-bug-3856'.lastIndexOf('-')+1);
+      } else {
+        bugOrFeatureId = currentBranch
+      }
+      callback(bugOrFeatureId);
+    }
+    
+  })
+}
+
+
 
 // new ZingGit().status();
 module.exports = new ZingGit();
