@@ -74,57 +74,13 @@ ZingInquirer.prototype.checkbox = function() {
   .prompt([
     {
       type: 'checkbox',
-      message: 'Select toppings',
+      message: '请检查您要提交的内容！默认全部提交，上下操作按空格取消您不想提交的内容。',
       name: 'toppings',
-      choices: [
-        new inquirer.Separator(' = The Meats = '),
-        {
-          name: 'Pepperoni'
-        },
-        {
-          name: 'Ham'
-        },
-        {
-          name: 'Ground Meat'
-        },
-        {
-          name: 'Bacon'
-        },
-        new inquirer.Separator(' = The Cheeses = '),
-        {
-          name: 'Mozzarella',
-          checked: true
-        },
-        {
-          name: 'Cheddar'
-        },
-        {
-          name: 'Parmesan'
-        },
-        new inquirer.Separator(' = The usual ='),
-        {
-          name: 'Mushroom'
-        },
-        {
-          name: 'Tomato'
-        },
-        new inquirer.Separator(' = The extras = '),
-        {
-          name: 'Pineapple'
-        },
-        {
-          name: 'Olives',
-          disabled: 'out of stock'
-        },
-        {
-          name: 'Extra cheese'
-        }
-      ],
+      choices: [],
       validate: function(answer) {
         if (answer.length < 1) {
-          return 'You must choose at least one topping.';
+          return '请至少选择一个要提交的内容！';
         }
-
         return true;
       }
     }
