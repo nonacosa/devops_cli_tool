@@ -58,7 +58,6 @@ ZingConfig.prototype.checkCookie = function(type) {
        if(typeConfig == '') {
          // 未配置，请输入相关 cookie
         ZingInquirer.setCookie(type, cookie => {
-          console.log(Config)
           Config[type] = cookie;
           new ZingConfig().resetConfig(JSON.stringify(Config));
         })

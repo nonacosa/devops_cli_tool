@@ -102,6 +102,7 @@ ZingInquirer.prototype.setCookie = function(type,callback) {
       message: `检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie :`,
     }
   ];
+
   inquirer.prompt(questions).then(answers => {
     callback(answers.cookie);
   });
