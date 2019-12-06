@@ -69,14 +69,14 @@ ZingInquirer.prototype.longList = function() {
     });
 }
 
-ZingInquirer.prototype.checkbox = function() {
+ZingInquirer.prototype.checkbox = function(choices) {
   inquirer
   .prompt([
     {
       type: 'checkbox',
       message: '请检查您要提交的内容！默认全部提交，上下操作按空格取消您不想提交的内容。',
       name: 'toppings',
-      choices: [],
+      choices: choices,
       validate: function(answer) {
         if (answer.length < 1) {
           return '请至少选择一个要提交的内容！';
