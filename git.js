@@ -10,6 +10,11 @@ function ZingGit () {}
 
 // rebase 比较适合公司场景 http://gitbook.liuhui998.com/4_2.html
 
+ 
+
+ 
+
+
 // update repo and when there are changes, restart the app
 ZingGit.prototype.pull = function() {
   git.pull((err, update) => {
@@ -36,6 +41,7 @@ ZingGit.prototype.gitInfo = function() {
      
 //git checkout -b 本地分支名 origin/远程分支名
 ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
+  git.fetch()
   if(origin == undefined || origin === null) {
     origin = 'origin/dev'
   }
@@ -132,7 +138,7 @@ ZingGit.prototype.branchInfo = function(callback) {
 
 
 
-// new ZingGit().status();
+
 module.exports = new ZingGit();
      
 
