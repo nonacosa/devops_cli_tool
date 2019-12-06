@@ -52,8 +52,9 @@ ZingGit.prototype.status = function() {
       for(var i = 0; i< result.files.length; i++) {
         fileArr.push(__dirname + '/' + result.files[i].path)
       }
-      console.log(result.StatusSummary);
+      console.log(result);
       console.log(result.files);
+      new ZingGit().add(fileArr);
       new ZingGit().commit(fileArr);
     }
   });
