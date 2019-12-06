@@ -48,7 +48,7 @@ ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
   git.checkoutBranch(branch,origin, function (err, result) {
     if(!err) {
       currentBugId = bugId;
-      console.info('自动为您从 &s 创建并切换为分支：%s 👌',origin,branch)
+      console.info('自动为您从 %s 创建并切换为分支：%s 👌',origin,branch)
       // new ZingGit().gitInfo();
       console.warn('请尽量确保一个分支只解决一个问题 ! ')
     }
