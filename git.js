@@ -78,7 +78,6 @@ ZingGit.prototype.checkAndCommit = function(msg) {
       eachCheck(checkArr,result.renamed,"当前改名的文件");
       ZingInquirer.checkbox(checkArr,files => {
         let toCommitFilesPathArray = [];
-        console.log(files)
         for(var i = 0; i< files.length; i++) {
           toCommitFilesPathArray.push(__dirname + '/' + files[i]);
         }

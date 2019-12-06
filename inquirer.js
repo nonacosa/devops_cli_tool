@@ -65,7 +65,6 @@ ZingInquirer.prototype.longList = function() {
       }
     ])
     .then(answers => {
-      console.log(JSON.stringify(answers, null, '  '));
     });
 }
 
@@ -87,7 +86,6 @@ ZingInquirer.prototype.checkbox = function(choices,callback) {
     }
   ])
   .then(answers => {
-    console.log(JSON.stringify(answers, null, '  '));
     callback(answers.files)
   });
 }

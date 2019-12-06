@@ -46,7 +46,7 @@ ZingCMD.prototype.listening = function() {
    * 检测是否携带可选 
    */
   if (program.bug) {
-    console.log('1')
+    console.log('--------')
     /***
      * 可选指令
      * -h         没有携带附加参数, 则program.hot为true
