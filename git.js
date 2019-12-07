@@ -147,8 +147,8 @@ ZingGit.prototype.push = function(callback) {
   
 }
 //git push current fix-xxx-xxx push to origin 
-ZingGit.prototype.checkout = function(callback) {
- 
+ZingGit.prototype.checkoutDev = function(callback) {
+  git.fetch()
   git.checkout('dev',(err,res) => {
     console.info('checkout 分支 %s 到远程成功');
   });
