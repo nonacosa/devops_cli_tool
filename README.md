@@ -28,3 +28,5 @@ zgit --help # zgit -h
 
 ![](http://www.gitrue.com:9000/image/A7055320A68EEF852DBA77002AEFBEED.jpg)
 
+![](http://http://www.gitrue.com:9000/image/92330D317E10D026EC3E1C3EFD7755EB.png)
+
