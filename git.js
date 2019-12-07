@@ -10,6 +10,11 @@ function ZingGit () {}
 
 // rebase 比较适合公司场景 http://gitbook.liuhui998.com/4_2.html
 
+ 
+
+ 
+
+
 // update repo and when there are changes, restart the app
 ZingGit.prototype.pull = function() {
   git.pull((err, update) => {
@@ -36,13 +41,14 @@ ZingGit.prototype.gitInfo = function() {
      
 //git checkout -b 本地分支名 origin/远程分支名
 ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
+  git.fetch()
   if(origin == undefined || origin === null) {
     origin = 'origin/dev'
   }
   git.checkoutBranch(branch,origin, function (err, result) {
     if(!err) {
       currentBugId = bugId;
-      console.info('自动为您从 &s 创建并切换为分支：%s 👌',origin,branch)
+      console.info('自动为您从 %s 创建并切换为分支：%s 👌',origin,branch)
       // new ZingGit().gitInfo();
       console.warn('请尽量确保一个分支只解决一个问题 ! ')
     }
@@ -132,7 +138,7 @@ ZingGit.prototype.branchInfo = function(callback) {
 
 
 
-// new ZingGit().status();
+
 module.exports = new ZingGit();
      
 

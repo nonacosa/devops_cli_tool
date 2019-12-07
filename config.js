@@ -4,6 +4,7 @@ var fs = require("fs");
 var ZingInquirer = require("./inquirer");
 
 const CONFIG_PATH = '/usr/local/zingGit-config.json';
+const DIR_PATH = '/usr/local/';
 
 function ZingConfig() { }
 
@@ -20,16 +21,24 @@ ZingConfig.prototype.init = function (callback) {
   fs.readFile(CONFIG_PATH, function (err, data) {
     if (err) {
       console.info('配置文件不存在，正在创建...')
-      fs.writeFile(CONFIG_PATH, JSON.stringify({ chandao: '', wekan: {} }), function (err) {
-        if (err) {
-          console.error('创建文件失败，请检查权限，UNIX 系统以管理员「sudo」运行！ ')
-          return console.error(err);
-        } else {
-          console.info('初始化成功 👌');
-          callback();
-        }
+      fs.mkdir(DIR_PATH, err => {
+        // -17  目录已存在
+        if (!err || err.errno == -17) {
+          console.info('目录创建成功...')
+          fs.writeFile(CONFIG_PATH, JSON.stringify({ chandao: '', wekan: '' }), function (err) {
+            if (err) {
+              console.error('创建文件失败，请检查权限，UNIX 系统以管理员「sudo」运行！ ')
+              return console.error(err);
+            } else {
+              console.info('初始化成功 👌');
+              callback();
+            }
 
-      });
+          });
+        } else {
+          console.err(err)
+        }
+      })
     } else {
       callback();
     }
@@ -54,7 +63,6 @@ ZingConfig.prototype.checkCookie = function (type) {
     if (!err) {
       let Config = JSON.parse(data.toString());
       let typeConfig = Config[type];
-      console.log(typeConfig)
       if (typeConfig == '') {
         // 未配置，请输入相关 cookie
         ZingInquirer.setCookie(type, cookie => {
