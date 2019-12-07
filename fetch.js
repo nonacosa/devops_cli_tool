@@ -59,11 +59,13 @@ function loagMyBug(queryData, fn) {
       // 存储数据的表格
       let tableData = []
       for (let i = 0; i < bugs.length; i++) {
-        tableData[i] = [i + 1, bugs[i].id, bugs[i].openedBy, bugs[i].title, `${zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
+        tableData[i] = [i + 1, bugs[i].id, bugs[i].title, `${zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
       }
       if (bugs.length == 0) {
         tableData[i] = [0, '-', '-', '您没有BUG', `${zentaoBaseUrl}/zentao/`]
       }
+
+    if(fn != undefined) fn(tableData);
     })
     .catch(err => {
       console.warn('cookie 可能已经过期，请重新调整！')
