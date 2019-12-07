@@ -36,6 +36,13 @@ zgit --help # zgit -h
 
     自动把 fix-bug-11011 推送到 origin，然后自动 切换/checkout dev 到本地，fetch、pull 代码， merge fix-bug-11011 到 dev，然后 push dev 到 origin/dev
     
+    
+## FAQ
+
+- cookie
+
+ cookie 要从外网获取：http://39.104.96.233:60888/zentao/  不要从内网获取
+
 ## 效果
 
 ![](http://www.gitrue.com:9000/image/A95FE3D1DCBD16064DF8824783448546.jpg)
