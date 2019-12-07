@@ -8,14 +8,15 @@ function ZingCMD() { }
 
 let table2 = new Table2({
   head: ['功能', '命令', '缩写', '例子'],
-  colWidths: [35, 10, 10, 40]
+  colWidths: [35, 15, 5, 40]
 })
 
 table2.push(
   ['查看帮助', '--help', '-h', 'zingGit -h 或 zingGit --help'],
-  ['查看 「 wekan 」列表 (敬请期待)', 'feature', '-f', 'zingGit -f 或 zingGit feature'],
-  ['查看 「 禅 道 」列表 ', 'bug', '-b', 'zingGit -b 或 zingGit bug'],
-  ['可以自动填写 commit 信息', 'commit', '-c', 'zingGit -c 或 zingGit commit']
+  ['查看 「 wekan 」列表 (敬请期待)', '--feature', '-f', 'zingGit -f 或 zingGit --feature'],
+  ['查看 「 禅 道 」列表 ', '--bug', '-b', 'zingGit -b 或 zingGit --bug'],
+  ['可以自动填写 commit 信息', '--commit', '-c', 'zingGit -c 或 zingGit --commit'],
+  ['可以自动填写 commit 信息', '--commit', '-c', 'zingGit -c 或 zingGit --push']
 )
 
 ZingCMD.prototype.listening = function () {
