@@ -23,7 +23,7 @@ ZingConfig.prototype.init = function (callback) {
       console.info('配置文件不存在，正在创建...')
       fs.mkdir(DIR_PATH, err => {
         // -17  目录已存在
-        if (!err || err.errno == -4075) {
+        if (!err || err.errno == -4075 || err.errno == -17) {
           console.info('目录创建成功...')
           fs.writeFile(CONFIG_PATH, JSON.stringify({ chandao: '', wekan: '' }), function (err) {
             if (err) {
