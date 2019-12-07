@@ -157,7 +157,7 @@ ZingGit.prototype.checkoutDev = function(callback) {
 }
 
 
-new ZingGit().checkout();
+new ZingGit().checkoutDev();
 
 
 
