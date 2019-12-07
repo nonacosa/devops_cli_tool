@@ -69,7 +69,7 @@ ZingInquirer.prototype.longList = function() {
 }
 
 ZingInquirer.prototype.checkbox = function(choices,callback) {
-  console.log(choices)
+  // console.log(choices)
   inquirer
   .prompt([
     {

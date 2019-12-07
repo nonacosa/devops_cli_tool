@@ -3,8 +3,8 @@
 var fs = require("fs");
 var ZingInquirer = require("./inquirer");
 
-const CONFIG_PATH = '/Users/Venda-GM/Desktop/sss/zingGit-config.json';
-const DIR_PATH = '/Users/Venda-GM/Desktop/sss/';
+const CONFIG_PATH = '/usr/local/zingGit-config.json';
+const DIR_PATH = '/usr/local/';
 
 function ZingConfig () {}
 
@@ -22,7 +22,8 @@ ZingConfig.prototype.init = function(callback) {
     if (err) {
        console.info('配置文件不存在，正在创建...')
        fs.mkdir(DIR_PATH, err => {
-         if(!err) {
+         // -17  目录已存在
+         if(!err || err.errno == -17) {
           console.info('目录创建成功...')
           fs.writeFile(CONFIG_PATH, JSON.stringify({chandao:'',wekan:''}),  function(err) {
             if (err) {
@@ -34,6 +35,8 @@ ZingConfig.prototype.init = function(callback) {
             }
             
           });
+         }else {
+          console.err(err)
          }
        })
     } else {
@@ -60,7 +63,6 @@ ZingConfig.prototype.checkCookie = function(type) {
     if (!err) {
       let Config = JSON.parse(data.toString());
       let typeConfig = Config[type];
-       console.log(typeConfig)
        if(typeConfig == '') {
          // 未配置，请输入相关 cookie
         ZingInquirer.setCookie(type, cookie => {
