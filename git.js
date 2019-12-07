@@ -205,7 +205,6 @@ ZingGit.prototype.pushZinglabsRules = function(callback) {
  
 
 
-new ZingGit().pushZinglabsRules();
 
 
 
