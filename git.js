@@ -138,20 +138,25 @@ ZingGit.prototype.branchInfo = function(callback) {
   })
 }
 
+
+
 //git push
 ZingGit.prototype.push = function(callback) {
   console.log('----')
   ZingGit.prototype.branchInfo((id,name) => {
     git.push('origin',name,(err,res) => {
       console.info('push 分支 %s 到远程成功',name);
+      if(callback != undefined) {
+        callback(name)
+      }
     });
   })
   
 }
 
 //git merge
-ZingGit.prototype.merge = function(callback) {
-   git.mergeFromTo('test','dev',(err,res) => {
+ZingGit.prototype.merge = function(oldBranch,callback) {
+   git.mergeFromTo(oldBranch,'dev',(err,res) => {
       if(!err) {
         if(callback != undefined) {
           callback();
@@ -163,29 +168,40 @@ ZingGit.prototype.merge = function(callback) {
 
 
 //git checkout and pull 
-ZingGit.prototype.checkoutDev = function(callback) {
+ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
   git.fetch()
   git.checkout('dev',(err,res) => {
     if(!err) {
       console.info('checkout 分支 dev 到远程成功 ！\n');
       console.info('准备从 origin 更新 dev');
       ZingGit.prototype.pull(cb => {
-        ZingGit.prototype.merge(() => {
+        ZingGit.prototype.merge(oldBranch,() => {
           console.info('merge 完成 ！')
           ZingGit.prototype.push();
+          if(callback != undefined) {
+            callback();
+          }
         })
       })
       
     }
   });
  
-  
+}
+
+ZingGit.prototype.pushZinglabsRules() = function(callback) {
+  //先把当前分支推到远程
+  ZingGit.prototype.push(fixBranchName => {
+    ZingGit.prototype.checkoutDev(oldBranch,() => {
+      console.info('流程完成，请检查！')
+    })
+  });
 }
 
  
 
 
-new ZingGit().checkoutDev();
+new ZingGit().pushZinglabsRules();
 
 
 
