@@ -32,7 +32,7 @@ ZingGit.prototype.pull = function(callback) {
 ZingGit.prototype.gitInfo = function() {
   git.listRemote(['--get-url'], (err, data) => {
       if (!err) {
-          console.info('当前工作目录：>>> %s   👌' , __dirname );
+          console.info('当前工作目录：>>> %s   👌' , process.cwd() );
           console.info('当前远程空间：>>> %s   ' , data);
           // git.addRemote('origin', data, (err,addInfo) => {
           //   console.info('addInfo >>> ' + addInfo);
@@ -76,7 +76,8 @@ ZingGit.prototype.checkAndCommit = function(msg) {
     if(!err) {
 
       for(var i = 0; i< result.files.length; i++) {
-        fileArr.push(__dirname + '/' + result.files[i].path)
+        fileArr.push(process.cwd() + '/' + result.files[i].path)
+        
       }
  
       eachCheck(checkArr,result.not_added,"当前新建的文件");
@@ -88,7 +89,7 @@ ZingGit.prototype.checkAndCommit = function(msg) {
       ZingInquirer.checkbox(checkArr,files => {
         let toCommitFilesPathArray = [];
         for(var i = 0; i< files.length; i++) {
-          toCommitFilesPathArray.push(__dirname + '/' + files[i]);
+          toCommitFilesPathArray.push(process.cwd() + '/' + files[i]);
         }
         new ZingGit().add(toCommitFilesPathArray);
         new ZingGit().commit(toCommitFilesPathArray,msg);
