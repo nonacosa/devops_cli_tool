@@ -146,9 +146,19 @@ ZingGit.prototype.push = function(callback) {
   })
   
 }
+//git push current fix-xxx-xxx push to origin 
+ZingGit.prototype.checkout = function(callback) {
+ 
+  git.checkout('dev',(err,res) => {
+    console.info('checkout 分支 %s 到远程成功');
+  });
+ 
+  
+}
 
-console.log('--1--')
-new ZingGit().push();
+
+new ZingGit().checkout();
+
 
 
 module.exports = new ZingGit();
