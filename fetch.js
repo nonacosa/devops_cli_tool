@@ -66,6 +66,7 @@ function loagMyBug(queryData, fn) {
       }
 
     if(fn != undefined) fn(tableData);
+    
     })
     .catch(err => {
       console.warn('cookie 可能已经过期，请重新调整！')

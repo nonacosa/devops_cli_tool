@@ -39,7 +39,8 @@ ZingCMD.prototype.listening = function () {
   program
     .option('-b --bug')
     .option('-f --feature')
-    .option('-c --commit ')
+    .option('-c --commit')
+    .option('-p --push')
     .parse(process.argv)
 
   if (program.bug) {// bug 命令
