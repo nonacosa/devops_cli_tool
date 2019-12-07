@@ -172,6 +172,7 @@ ZingGit.prototype.checkoutDev = function(callback) {
       ZingGit.prototype.pull(cb => {
         ZingGit.prototype.merge(() => {
           console.info('merge 完成 ！')
+          ZingGit.prototype.push();
         })
       })
       
