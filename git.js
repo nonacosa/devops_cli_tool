@@ -151,13 +151,13 @@ ZingGit.prototype.push = function(callback) {
 
 //git merge
 ZingGit.prototype.merge = function(callback) {
-   git.mergeFromTo('test','dev',(err,res => {
+   git.mergeFromTo('test','dev',(err,res) => {
       if(!err) {
         if(callback != undefined) {
           callback();
         }
       }
-   }))
+   })
   
 }
 
