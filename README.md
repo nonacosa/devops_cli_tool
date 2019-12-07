@@ -3,7 +3,7 @@
 
 ![](http://www.gitrue.com:9000/image/5653A9A90F0794A637C07489321E4B54.jpg)
 
-![](http://www.gitrue.com:9000/image/4A846B48D19C958C68023D8C3EAE08BE.jpg)
+![](http://www.gitrue.com:9000/image/36AD7CD662079A8336A129CAA3F4B942.jpg)
  
 ## 如何安装？
 
