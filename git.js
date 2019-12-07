@@ -43,7 +43,7 @@ ZingGit.prototype.gitInfo = function() {
 ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
   git.fetch()
   if(origin == undefined || origin === null) {
-    origin = 'origin/dev'
+    origin = 'origin/master'
   }
   git.checkoutBranch(branch,origin, function (err, result) {
     if(!err) {
@@ -119,24 +119,36 @@ ZingGit.prototype.commit = function(fileArr,msg) {
   
 }
 
-//git commit
+//git branchInfo
 ZingGit.prototype.branchInfo = function(callback) {
   git.branch(null,(err,data) => {
     if(!err) {
       let currentBranch = data.current;
       let bugOrFeatureId = '';
       if(currentBranch.indexOf('fix') > -1) {
-        bugOrFeatureId = 'fix-bug-3856'.substring('fix-bug-3856'.lastIndexOf('-')+1);
+        bugOrFeatureId = currentBranch.substring(currentBranch.lastIndexOf('-')+1);
       } else {
         bugOrFeatureId = currentBranch
       }
-      callback(bugOrFeatureId);
+      callback(bugOrFeatureId,currentBranch);
     }
-    
   })
 }
+console.log('--1--')
 
+//git push
+ZingGit.prototype.push = function(callback) {
+  console.log('----')
+  ZingGit.prototype.branchInfo((id,name) => {
+    git.push('origin',name,(err,res) => {
+      console.info('push 分支 %s 到远程成功',name);
+    });
+  })
+  
+}
 
+console.log('--1--')
+new ZingGit().push();
 
 
 module.exports = new ZingGit();
