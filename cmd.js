@@ -45,7 +45,7 @@ ZingCMD.prototype.listening = function() {
    
   if (program.bug)  ZingFetch.getResult({}, 'bug')
   if (program.commit)  ZingGit.checkAndCommit()
-  if (program.feature)  ZingFetch.getResult({}, 'feature')
+  if (program.feature)  console.info('开发中...')
  
   
   // 提交 命令
