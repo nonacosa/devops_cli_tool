@@ -16,7 +16,7 @@ table2.push(
   ['查看 「 wekan 」列表 (敬请期待)', '--feature', '-f', 'zingGit -f 或 zingGit --feature'],
   ['查看 「 禅 道 」列表 ', '--bug', '-b', 'zingGit -b 或 zingGit --bug'],
   ['可以自动填写 commit 信息', '--commit', '-c', 'zingGit -c 或 zingGit --commit'],
-  ['可以自动填写 commit 信息', '--commit', '-c', 'zingGit -c 或 zingGit --push']
+  ['自动 push', '--push', '-p', 'zingGit -p 或 zingGit --push']
 )
 
 ZingCMD.prototype.listening = function () {
