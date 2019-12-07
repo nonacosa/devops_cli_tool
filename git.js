@@ -193,7 +193,7 @@ ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
 ZingGit.prototype.pushZinglabsRules = function(callback) {
   //先把当前分支推到远程
   ZingGit.prototype.push(fixBranchName => {
-    ZingGit.prototype.checkoutDev(oldBranch,() => {
+    ZingGit.prototype.checkoutDev(fixBranchName,() => {
       console.info('流程完成，请检查！')
     })
   });
