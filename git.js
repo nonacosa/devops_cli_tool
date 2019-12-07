@@ -16,12 +16,15 @@ function ZingGit () {}
 
 
 // update repo and when there are changes, restart the app
-ZingGit.prototype.pull = function() {
+ZingGit.prototype.pull = function(callback) {
   git.pull((err, update) => {
         if(update && update.summary.changes) {
           //  require('child_process').exec('npm restart');
           console.log('发现新的更新!')
           console.log(update)
+        }
+        if(callback != undefined) {
+          callback();
         }
      });
 }
@@ -134,7 +137,6 @@ ZingGit.prototype.branchInfo = function(callback) {
     }
   })
 }
-console.log('--1--')
 
 //git push
 ZingGit.prototype.push = function(callback) {
@@ -146,15 +148,40 @@ ZingGit.prototype.push = function(callback) {
   })
   
 }
-//git push current fix-xxx-xxx push to origin 
+
+//git merge
+ZingGit.prototype.merge = function(callback) {
+   git.mergeFromTo('test','dev',(err,res => {
+      if(!err) {
+        if(callback != undefined) {
+          callback();
+        }
+      }
+   }))
+  
+}
+
+
+//git checkout and pull 
 ZingGit.prototype.checkoutDev = function(callback) {
   git.fetch()
   git.checkout('dev',(err,res) => {
-    console.info('checkout 分支 %s 到远程成功');
+    if(!err) {
+      console.info('checkout 分支 dev 到远程成功 ！\n');
+      console.info('准备从 origin 更新 dev');
+      ZingGit.prototype.pull(cb => {
+        ZingGit.prototype.merge(() => {
+          console.info('merge 完成 ！')
+        })
+      })
+      
+    }
   });
  
   
 }
+
+ 
 
 
 new ZingGit().checkoutDev();
