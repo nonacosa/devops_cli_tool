@@ -69,7 +69,7 @@ function loagMyBug(queryData, fn) {
     
     })
     .catch(err => {
-      console.err(err)
+      console.error(err)
       console.warn('cookie 可能已经过期，请重新调整！')
       ZingConf.check()
     })
