@@ -52,6 +52,10 @@ ZingCMD.prototype.listening = function () {
 
   if (program.commit) {// 提交 命令
     ZingGit.checkAndCommit()
+  } 
+  
+  if (program.push) {// 提交 命令
+    ZingGit.pushZinglabsRules()
   }
 
   // program

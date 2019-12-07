@@ -195,6 +195,9 @@ ZingGit.prototype.pushZinglabsRules = function(callback) {
   ZingGit.prototype.push(fixBranchName => {
     ZingGit.prototype.checkoutDev(fixBranchName,() => {
       console.info('流程完成，请检查！')
+      if(callback != undefined) {
+        callback()
+      }
     })
   });
 }
