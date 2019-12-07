@@ -52,27 +52,31 @@ function loagMyBug(queryData, fn) {
   //lang=zh-cn; device=desktop; theme=default; preBranch=0; bugModule=0; qaBugOrder=id_desc; lastProject=1; moduleBrowseParam=0; preProjectID=1; projectTaskOrder=id_desc; selfClose=0; productBrowseParam=9; keepLogin=on; za=zhuangwenda; lastProduct=49; preProductID=49; zp=422adbe139a2d5a846a1af2377d5e8da159d0a7d; selfClose=1; windowHeight=1217; windowWidth=1171; zentaosid=edf0vi8v07bln97tqo2gnusgt5
   request.get(`${zentaoBaseUrl}/zentao/my-bug.json`)
     .query(queryData)
-    .set('Cookie', ZingConf.getCookie())
+    .set('Cookie', ZingConf.get())
     .then(res => {
       let info = JSON.parse(JSON.parse(res.text).data)
       let bugs = info.bugs
       // 存储数据的表格
       let tableData = []
       for (let i = 0; i < bugs.length; i++) {
-        tableData[i] = [i + 1, bugs[i].id, bugs[i].openedBy, bugs[i].title, `http://39.104.96.233:60888/zentao/bug-view-${bugs[i].id}.html`]
+        tableData[i] = [i + 1, bugs[i].id, bugs[i].openedBy, bugs[i].title, `${zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
       }
       if (bugs.length == 0) {
-        tableData[i] = [0, '-', '-', '您没有BUG', `http://39.104.96.233:60888/zentao/`]
+        tableData[i] = [0, '-', '-', '您没有BUG', `${zentaoBaseUrl}/zentao/`]
       }
     })
     .catch(err => {
       console.warn('cookie 可能已经过期，请重新调整！')
-      ZingConf.checkCookie()
+      ZingConf.check()
     })
 }
 
 async function loadMyFeature(fn) {
-  let userId = "iG3MwzHzZhh3Az9Cz"
+  let userId = ""
+  let userData = ZingConf.get("wekan");
+  if (typeof userData === "object") {
+    userId = userData.id;
+  }
   const boards = await wekanRequest(`/api/users/${userId}/boards`);
   let boardList = [];
   for (let i = 0; i < boards.length; i++) {
@@ -112,7 +116,7 @@ async function loadMyFeature(fn) {
   let tableData = []
   let index = 1;
   features.forEach(item => {
-    tableData.push([index++, item.customFields[0].value, item.title, `http://39.104.107.146/b/${item.boardId}/board/${item._id}`])
+    tableData.push([index++, item.customFields[0].value, item.title, `${wenkanBaseUrl}/b/${item.boardId}/board/${item._id}`])
   })
   fn(tableData)
 }
@@ -127,11 +131,21 @@ function isEmpty(val) {
 
 async function wekanRequest(path, fn) {
   const promise = new Promise((resolve, reject) => {
-    let authorization = "0Ac3b8LF1EqabyG-MbuhRDM0zMmzTlByCE-fb__O3DT"
+    let userData = ZingConf.get("wekan");
+    let authorization = "";
+    if (typeof userData === "object") {
+      authorization = userData.token;
+    }
     request.get(wenkanBaseUrl + path)
       .set('Authorization', `Bearer ${authorization}`)
       .then(res => {
-        resolve(res.body)
+        if (res.body.statusCode === 401) {
+          console.error(res.body.statusCode === 401)
+          ZingConf.check("wekan")
+        } else {
+          resolve(res.body)
+        }
+
       })
       .catch(err => {
         reject(err)

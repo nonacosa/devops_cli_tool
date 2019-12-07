@@ -2,10 +2,13 @@
 'use strict';
 const inquirer = require('inquirer');
 var chalkPipe = require('chalk-pipe');
+const request = require('superagent')
 
-function ZingInquirer () {}
+const wenkanBaseUrl = "http://39.104.107.146"
 
-ZingInquirer.prototype.list = function() {
+function ZingInquirer() { }
+
+ZingInquirer.prototype.list = function () {
   inquirer.prompt([
     {
       type: 'list',
@@ -28,18 +31,18 @@ ZingInquirer.prototype.list = function() {
       name: 'size',
       message: 'What size do you need?',
       choices: ['Jumbo', 'Large', 'Standard', 'Medium', 'Small', 'Micro'],
-      filter: function(val) {
+      filter: function (val) {
         return val.toLowerCase();
       }
     }
   ])
-  .then(answers => {
-    console.log(JSON.stringify(answers, null, '  '));
-  })
+    .then(answers => {
+      console.log(JSON.stringify(answers, null, '  '));
+    })
 }
 
 
-ZingInquirer.prototype.longList = function() {
+ZingInquirer.prototype.longList = function () {
   var choices = Array.apply(0, new Array(26)).map((x, y) => String.fromCharCode(y + 65));
   choices.push('Multiline option \n  super cool feature');
   choices.push({
@@ -48,7 +51,7 @@ ZingInquirer.prototype.longList = function() {
     value: 'foo',
     short: 'The long option'
   });
-  
+
   inquirer
     .prompt([
       {
@@ -68,36 +71,36 @@ ZingInquirer.prototype.longList = function() {
     });
 }
 
-ZingInquirer.prototype.checkbox = function(choices,callback) {
+ZingInquirer.prototype.checkbox = function (choices, callback) {
   // console.log(choices)
   inquirer
-  .prompt([
-    {
-      type: 'checkbox',
-      message: '请检查您要提交的内容！默认全部提交，上下操作按空格取消您不想提交的内容。',
-      name: 'files',
-      choices: choices,
-      validate: function(answer) {
-        if (answer.length < 1) {
-          return '请至少选择一个要提交的内容！';
+    .prompt([
+      {
+        type: 'checkbox',
+        message: '请检查您要提交的内容！默认全部提交，上下操作按空格取消您不想提交的内容。',
+        name: 'files',
+        choices: choices,
+        validate: function (answer) {
+          if (answer.length < 1) {
+            return '请至少选择一个要提交的内容！';
+          }
+          return true;
         }
-        return true;
       }
-    }
-  ])
-  .then(answers => {
-    callback(answers.files)
-  });
+    ])
+    .then(answers => {
+      callback(answers.files)
+    });
 }
 
 // BUG 编号 「需求可重用」
-ZingInquirer.prototype.inputBugIndex = function(callback) {
+ZingInquirer.prototype.inputBugIndex = function (callback) {
   var questions = [
     {
       type: 'input',
       name: 'index',
       message: "请输入您要解决的 BUG 或 FEATURE 序号 :",
-      validate: function(value) {
+      validate: function (value) {
         var pass = value.match(
           /^-?[1-9]\d*$/i
         );
@@ -108,28 +111,57 @@ ZingInquirer.prototype.inputBugIndex = function(callback) {
       }
     }
   ];
-  
+
   inquirer.prompt(questions).then(answers => {
     callback(answers.index);
   });
 }
 
 // 设置相关 Cookie
-ZingInquirer.prototype.setCookie = function(type,callback) {
-  var questions = [
-    {
-      type: 'input',
-      name: 'cookie',
-      message: ` \n 检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie ! \n 或手动在 /usr/local/zingGit-config.json 内进行配置 :`,
-    }
-  ];
+ZingInquirer.prototype.setCookie = function (type, callback) {
+  if ("chandao" === type) {
+    var questions = [
+      {
+        type: 'input',
+        name: 'cookie',
+        message: ` \n 检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie ! \n 或手动在 /usr/local/zingGit-config.json 内进行配置 :`,
+      }
+    ];
 
-  inquirer.prompt(questions).then(answers => {
-    callback(answers.cookie);
-  });
+    inquirer.prompt(questions).then(answers => {
+      callback(answers.cookie);
+    });
+  } else if ("wekan" === type) {
+    var questions = [
+      {
+        type: 'input',
+        name: 'userMsg',
+        message: ` \n 请输入用户名密码以空格隔开 :`,
+      }
+    ];
+
+    inquirer.prompt(questions).then(answers => {
+      let user = answers.userMsg.split(/\s+/);
+      console.info(user[0], user[1])
+      request.post(`${wenkanBaseUrl}/users/login`)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .set('Accept', ' */*')
+        .send({ username: user[0], password: user[1] })
+        .then(res => {
+          callback(res.body)
+        })
+        .catch(err => {
+          console.error('cookie 可能已经过期，请重新调整！')
+        })
+    });
+
+
+  }
+
+
 }
 
 
- 
+
 
 module.exports = new ZingInquirer();

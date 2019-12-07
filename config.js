@@ -23,7 +23,7 @@ ZingConfig.prototype.init = function (callback) {
       console.info('配置文件不存在，正在创建...')
       fs.mkdir(DIR_PATH, err => {
         // -17  目录已存在
-        if (!err || err.errno == -17) {
+        if (!err || err.errno == -4075) {
           console.info('目录创建成功...')
           fs.writeFile(CONFIG_PATH, JSON.stringify({ chandao: '', wekan: '' }), function (err) {
             if (err) {
@@ -36,7 +36,7 @@ ZingConfig.prototype.init = function (callback) {
 
           });
         } else {
-          console.err(err)
+          console.error(err)
         }
       })
     } else {
@@ -54,7 +54,7 @@ ZingConfig.prototype.resetConfig = function (config) {
   });
 
 }
-ZingConfig.prototype.checkCookie = function (type) {
+ZingConfig.prototype.check = function (type) {
 
   if (type == undefined || type === null) {
     type = 'chandao';
@@ -63,19 +63,17 @@ ZingConfig.prototype.checkCookie = function (type) {
     if (!err) {
       let Config = JSON.parse(data.toString());
       let typeConfig = Config[type];
-      if (typeConfig == '') {
-        // 未配置，请输入相关 cookie
-        ZingInquirer.setCookie(type, cookie => {
-          Config[type] = cookie;
-          new ZingConfig().resetConfig(JSON.stringify(Config));
-        })
-      }
+      // 未配置，请输入相关 cookie
+      ZingInquirer.setCookie(type, data => {
+        Config[type] = data;
+        new ZingConfig().resetConfig(JSON.stringify(Config));
+      })
     }
   });
 }
 
 
-ZingConfig.prototype.getCookie = function (type) {
+ZingConfig.prototype.get = function (type) {
   if (type == undefined || type === null) {
     type = 'chandao';
   }
@@ -84,9 +82,5 @@ ZingConfig.prototype.getCookie = function (type) {
   let Config = JSON.parse(data.toString());
   return Config[type];
 }
-
-ZingConfig.prototype.get
-
-// new ZingConfig().getCookie();
 
 module.exports = new ZingConfig();
