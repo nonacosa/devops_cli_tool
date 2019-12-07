@@ -25,9 +25,10 @@ function getResult(queryData, articleType) {
   } else {
     url = 'https://wekan'
   }
-  //lang=zh-cn; device=desktop; theme=default; preBranch=0; bugModule=0; qaBugOrder=id_desc; lastProject=1; moduleBrowseParam=0; preProjectID=1; projectTaskOrder=id_desc; selfClose=0; productBrowseParam=9; keepLogin=on; za=zhuangwenda; lastProduct=49; preProductID=49; zp=422adbe139a2d5a846a1af2377d5e8da159d0a7d; selfClose=1; windowHeight=1217; windowWidth=1171; zentaosid=edf0vi8v07bln97tqo2gnusgt5
   // ZingConf.checkCookie();
   // 网络请求
+  console.log('=====')
+  console.log(ZingConf.getCookie())
   request.get(url)
     .query(queryData)
     .set('Cookie', ZingConf.getCookie())
@@ -35,8 +36,10 @@ function getResult(queryData, articleType) {
       let info = JSON.parse(JSON.parse(res.text).data)
       let bugs = info.bugs
       for (let i = 0; i < bugs.length; i++) {
-         
         tableData[i] = [i+1, bugs[i].id, bugs[i].openedBy, bugs[i].title, `http://39.104.96.233:60888/zentao/bug-view-${bugs[i].id}.html`]
+      }
+      if(bugs.length == 0 ) {
+        tableData[i] = [0, '-', '-', '您没有BUG', `http://39.104.96.233:60888/zentao/`]
       }
     }).then(() => {
       config = {

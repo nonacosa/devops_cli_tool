@@ -42,38 +42,19 @@ ZingCMD.prototype.listening = function() {
     .option('-c --commit ')
     .parse(process.argv)
   
-  /***
-   * 检测是否携带可选 
-   */
-  if (program.bug) {
-    console.log('--------')
-    /***
-     * 可选指令
-     * -h         没有携带附加参数, 则program.hot为true
-     * -h [dir]   携带dir参数, program.hot为dir字符串
-     * 下方new参数同理
-     */
-    if (program.bug !== true) {
-      
-      // switchType(program.hot)
-    }
-    ZingFetch.getResult({}, 'bug')
-  }
+   
+  if (program.bug)  ZingFetch.getResult({}, 'bug')
+  if (program.commit)  ZingGit.checkAndCommit()
+  if (program.feature)  ZingFetch.getResult({}, 'feature')
  
-  // bug 命令
-  program
-    .command('bug')
-    .description('查看禅道我的 BUG 列表')
-    .action(function (command) {
-      ZingFetch.getResult({}, 'bug')
-    })
+  
   // 提交 命令
-  program
-    .command('commit')
-    .description('自动按规则 commit  修改')
-    .action(function (command) {
-      ZingGit.checkAndCommit()
-    })
+  // program
+  //   .command('commit')
+  //   .description('自动按规则 commit  修改')
+  //   .action(function (command) {
+  //     ZingGit.checkAndCommit()
+  //   })
   
   // program
   //   .command('new <dir>')

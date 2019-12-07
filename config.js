@@ -3,7 +3,8 @@
 var fs = require("fs");
 var ZingInquirer = require("./inquirer");
 
-const CONFIG_PATH = '/usr/local/zingGit-config.json';
+const CONFIG_PATH = '/Users/Venda-GM/Desktop/sss/zingGit-config.json';
+const DIR_PATH = '/Users/Venda-GM/Desktop/sss/';
 
 function ZingConfig () {}
 
@@ -20,16 +21,21 @@ ZingConfig.prototype.init = function(callback) {
   fs.readFile(CONFIG_PATH, function (err, data) {
     if (err) {
        console.info('配置文件不存在，正在创建...')
-       fs.writeFile(CONFIG_PATH, JSON.stringify({chandao:'',wekan:''}),  function(err) {
-        if (err) {
-          console.error('创建文件失败，请检查权限，UNIX 系统以管理员「sudo」运行！ ')
-          return console.error(err);
-        } else {
-          console.info('初始化成功 👌');
-          callback();
-        }
-        
-      });
+       fs.mkdir(DIR_PATH, err => {
+         if(!err) {
+          console.info('目录创建成功...')
+          fs.writeFile(CONFIG_PATH, JSON.stringify({chandao:'',wekan:''}),  function(err) {
+            if (err) {
+              console.error('创建文件失败，请检查权限，UNIX 系统以管理员「sudo」运行！ ')
+              return console.error(err);
+            } else {
+              console.info('初始化成功 👌');
+              callback();
+            }
+            
+          });
+         }
+       })
     } else {
       callback();
     }
