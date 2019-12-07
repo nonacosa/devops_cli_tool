@@ -190,7 +190,7 @@ ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
  
 }
 
-ZingGit.prototype.pushZinglabsRules() = function(callback) {
+ZingGit.prototype.pushZinglabsRules = function(callback) {
   //先把当前分支推到远程
   ZingGit.prototype.push(fixBranchName => {
     ZingGit.prototype.checkoutDev(oldBranch,() => {
