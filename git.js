@@ -133,6 +133,7 @@ ZingGit.prototype.branchInfo = function(callback) {
       } else {
         bugOrFeatureId = currentBranch
       }
+      console.log(currentBranch)
       callback(bugOrFeatureId,currentBranch);
     }
   })
