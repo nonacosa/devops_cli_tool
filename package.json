@@ -1,6 +1,6 @@
 {
   "name": "zing-git",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "The command Tools of zinglabs devops !",
   "main": "index.js",
   "scripts": {
