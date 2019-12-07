@@ -4,7 +4,7 @@ var fs = require("fs");
 
 var ZingInquirer = require("./inquirer");
 
-const CONFIG_PATH = '/usr/local/xxxx/zingGit-config.json';
+const CONFIG_PATH = '/usr/local/zingGit-config.json';
 const DIR_USR = '/usr/';
 const DIR_LOCAL = '/usr/local/';
 
