@@ -1,6 +1,6 @@
 'use strict';
 //where the workingDirPath is optional, defaulting to the current directory.
-const git = require('simple-git')();
+const git = require('simple-git')(process.cwd());
 const ZingInquirer = require('./inquirer')
 const inquirer = require('inquirer')
 
