@@ -33,14 +33,14 @@ zgit --bug  # zgit -b
 ```
 领取 bug
 
-> 如果是第一次使用，需要在 terminal 中粘贴禅道的 Request Header 中的 cookie，或直接在 /usr/local/zingGit-config.json 调整。
+> 如果是第一次使用，需要按提示在 terminal 中粘贴禅道的 Request Header 中的 cookie，或直接在 /usr/local/zingGit-config.json 调整。
 
 ```shell
 zgit --feature # zgit -f
 ```
 领取需求
 
-> 如果是第一次使用，需要在 terminal 中键入 wekan 的 账号 密码「空格分离」，或直接在 /usr/local/zingGit-config.json 调整。
+> 如果是第一次使用，需要按提示在 terminal 中键入 wekan 的 账号 密码「空格分离」，或直接在 /usr/local/zingGit-config.json 调整。
 
 ##  提交
 
