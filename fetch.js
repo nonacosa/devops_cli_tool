@@ -44,7 +44,7 @@ function createBranch(branchPrefix, tableData) {
     let code = bug[1];
     let title = bug[3];
     ZingGit.checkoutBranch(`${branchPrefix}-${code}`, null);
-    console.log("您选择的 需求/BUG 编号：%s  >>> %s ", code, title)
+    console.log("您选择的 需求/BUG 编号：%s  >>> %s \n", code, title)
   });
 }
 

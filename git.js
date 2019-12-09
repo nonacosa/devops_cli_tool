@@ -19,8 +19,9 @@ ZingGit.prototype.pull = function(callback) {
   git.pull((err, update) => {
         if(update && update.summary.changes) {
           //  require('child_process').exec('npm restart');
-          console.log('发现新的更新!')
+          console.log('=========发现新的更新!=========')
           console.log(update)
+          console.log("=============================")
         }
         if(callback != undefined) {
           callback();
@@ -112,8 +113,9 @@ ZingGit.prototype.commit = function(fileArr,msg) {
   new ZingGit().branchInfo(Id => {
     git.commit(msg || `fix-bug-${Id}  http://39.104.96.233:60888/zentao/bug-view-${Id}.html `, fileArr, null,function (err, result) {
     if(!err) {
-      console.info("提交成功，改动如下 ： \n\n")
+      console.info("=========提交成功，改动如下 ：==========\n\n")
       console.log(result)
+      console.info("=====================================")
     }else {
       console.log(err + '\n')
     }
@@ -143,15 +145,17 @@ ZingGit.prototype.branchInfo = function(callback) {
 
 //git push
 ZingGit.prototype.push = function(callback) {
-  console.log('----')
-  ZingGit.prototype.branchInfo((id,name) => {
-    git.push('origin',name,(err,res) => {
-      console.info('push 分支 %s 到远程成功',name);
-      if(callback != undefined) {
-        callback(name)
-      }
-    });
+  ZingGit.prototype.pull(ok => {
+    ZingGit.prototype.branchInfo((id,name) => {
+      git.push('origin',name,(err,res) => {
+        console.info('push 分支 %s 到远程成功',name);
+        if(callback != undefined) {
+          callback(name)
+        }
+      });
+    })
   })
+  
   
 }
 
@@ -174,7 +178,7 @@ ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
   git.checkout('dev',(err,res) => {
     if(!err) {
       console.info('checkout 分支 dev 到远程成功 ！\n');
-      console.info('准备从 origin 更新 dev');
+      console.info('准备从 origin 更新 dev ...');
       ZingGit.prototype.pull(cb => {
         ZingGit.prototype.merge(oldBranch,() => {
           console.info('merge 完成 ！')

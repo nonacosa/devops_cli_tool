@@ -22,7 +22,7 @@ ZingConfig.prototype.writeConfig = function (config) {
 ZingConfig.prototype.init = function (callback) {
   fs.readFile(CONFIG_PATH, function (err, data) {
     if (err) {
-      console.info('配置文件不存在，正在创建...')
+      console.info('配置文件不存在，正在创建... ')
       fs.mkdir(DIR_USR, err => {
         // -17  目录已存在
         if (!err || err.errno == -4075 || err.errno == -17) {
