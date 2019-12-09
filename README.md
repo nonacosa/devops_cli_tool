@@ -5,7 +5,7 @@
 ## 如何安装？
 
 ```shell
-npm install zing-git -g
+npm install zing-git -g  # cnpm install zing-git -g  
 ```
 
 或者 clone 代码，本地安装
@@ -16,7 +16,7 @@ npm install . -g
 
 使用：
 
-```
+```shell
 zgit --help # zgit -h
 ```    
 
