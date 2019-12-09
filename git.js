@@ -53,7 +53,7 @@ ZingGit.prototype.checkoutBranch = function(branch,origin,bugId) {
       currentBugId = bugId;
       console.info('自动为您从 %s 创建并切换为分支：%s 👌',origin,branch)
       // new ZingGit().gitInfo();
-      console.warn('\n\n 请尽量确保一个分支只解决一个问题 ! \n\n')
+      console.warn('\n\n请尽量确保一个分支只解决一个问题 ! \n\n')
     }
   });
 }    
@@ -179,7 +179,7 @@ ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
     if(!err) {
       console.info('checkout 分支 dev 到远程成功 ！\n');
       console.info('准备从 origin 更新 dev ...');
-      ZingGit.prototype.pull(cb => {
+      git.pull('origin','master',{'--no-rebase': null},(err,res) => {
         ZingGit.prototype.merge(oldBranch,() => {
           console.info('merge 完成 ！')
           ZingGit.prototype.push();
