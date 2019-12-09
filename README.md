@@ -75,7 +75,16 @@ zgit --push # zigt -p
 
 - cookie
 
- cookie 要从外网获取：http://39.104.96.233:60888/zentao/  不要从内网获取
+ cookie 「以禅道为例」：要从外网获取：http://39.104.96.233:60888/zentao/  不要从内网获取
+ 
+- 功能不好用
+ 
+ 可以重新 `npm install zing-git -g` 或 `cnpm install zing-git -g`
+
+- 初始化失败
+
+ 可能您是 Linux 或 Unix「mac」 等系统，初次执行需要 「sudo」 权限
+ 
 
 ## TODO
 
