@@ -79,7 +79,7 @@ zgit --push # zigt -p
  
 - 功能不好用
  
- 可以重新 `npm install zing-git -g` 或 `cnpm install zing-git -g`
+ 可以重新 `npm install zing-git -g` 或 `cnpm install zing-git -g`，升级程序，保证程序最新
 
 - 初始化失败
 
