@@ -178,8 +178,9 @@ ZingGit.prototype.checkoutDev = function(oldBranch,callback) {
   git.checkout('dev',(err,res) => {
     if(!err) {
       console.info('checkout 分支 dev 到远程成功 ！\n');
-      console.info('准备从 origin 更新 dev ...');
-      git.pull('origin','master',{'--no-rebase': null},(err,res) => {
+      console.info('准备从 origin 更新  dev  --no-rebase ... \n');
+      git.pull('origin','dev',{'--no-rebase': null},(err,res) => {
+        console.error(err)
         ZingGit.prototype.merge(oldBranch,() => {
           console.info('merge 完成 ！')
           ZingGit.prototype.push();
