@@ -26,15 +26,49 @@ zgit --help # zgit -h
 
 这是一套提交代码规范，使用流程如下：
 
-- -b -f 领取 bug 或 需求
+## 领取 bug 或 需求
 
-- zgit -c 提交
+```shell
+zgit --bug  # zgit -b
+```
+领取 bug
 
-    自动从 origin/master checkout 一份按照规范命名的本地分支 eg: fix-bug-11011。
+```shell
+zgit --feature # zgit -f
+```
+领取需求
+
+
+##  提交
+
+```shell
+zgit --commit  # zgit -c
+```
+
+> 自动从 origin/master checkout 一份按照规范命名的本地分支 eg: fix-bug-11011。
     
-- zgit -p 合并到远程
+## 合并流程
 
-    自动把 fix-bug-11011 推送到 origin，然后自动 切换/checkout dev 到本地，fetch、pull 代码， merge fix-bug-11011 到 dev，然后 push dev 到 origin/dev
+```shell
+zgit --push # zigt -p
+```
+这个命令做了什么事：
+
+- ① 自动把 fix-bug-11011 推送到 origin
+
+- ② 自动 切换/checkout dev 到本地
+
+- ③ 自动 fetch、pull 代码保证本地 dev 与远程同步
+
+- ④ 自动 merge fix-bug-11011 到 dev 
+
+- ⑤ 自动 push dev 到 origin/dev
+
+- ⑥ 手动解决/指派 bug ，等待测试即可
+
+- ⑦ 如果bug被关闭收到邮件通知，手动 merge origin/fix-bug-11011 到 origin/master 即可
+
+     
     
     
 ## FAQ
@@ -42,6 +76,11 @@ zgit --help # zgit -h
 - cookie
 
  cookie 要从外网获取：http://39.104.96.233:60888/zentao/  不要从内网获取
+
+## TODO
+
+- 自动解决/指派
+
 
 ## 效果
 
