@@ -94,12 +94,12 @@ ZingInquirer.prototype.checkbox = function (choices, callback) {
 }
 
 // BUG 编号 「需求可重用」
-ZingInquirer.prototype.inputBugIndex = function (callback) {
+ZingInquirer.prototype.inputNumRadio = function (title, callback) {
   var questions = [
     {
       type: 'input',
       name: 'index',
-      message: "请输入您要解决的 BUG 或 FEATURE 序号 :",
+      message: title,
       validate: function (value) {
         var pass = value.match(
           /^-?[1-9]\d*$/i

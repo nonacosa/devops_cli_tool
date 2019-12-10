@@ -12,11 +12,12 @@ let table2 = new Table2({
 })
 
 table2.push(
-  ['查看帮助', '--help', '-h', 'zingGit -h 或 zingGit --help'],
-  ['查看 「 wekan 」列表 (敬请期待)', '--feature', '-f', 'zingGit -f 或 zingGit --feature'],
-  ['查看 「 禅 道 」列表 ', '--bug', '-b', 'zingGit -b 或 zingGit --bug'],
-  ['可以自动填写 commit 信息', '--commit', '-c', 'zingGit -c 或 zingGit --commit'],
-  ['自动 push', '--push', '-p', 'zingGit -p 或 zingGit --push']
+  ['查看帮助', 'help', '-h', 'zingGit -h 或 zingGit --help'],
+  ['查看 「 wekan 」列表 (敬请期待)', 'feature', 'f', 'zingGit f 或 zingGit feature'],
+  ['查看 「 禅 道 」列表 ', 'bug', 'b', 'zingGit b 或 zingGit bug'],
+  ['可以自动填写 commit 信息', 'commit', 'c', 'zingGit c 或 zingGit commit'],
+  ['自动 push', 'push', 'p', 'zingGit p 或 zingGit push'],
+  ['切换分支', 'checkout', 'co', 'zingGit co 或 zingGit checkout']
 )
 
 ZingCMD.prototype.listening = function () {
@@ -38,10 +39,11 @@ ZingCMD.prototype.listening = function () {
 
   // 添加可选指令
   program
-    .option('-b --bug')
-    .option('-f --feature')
-    .option('-c --commit')
-    .option('-p --push')
+    .option('b bug')
+    .option('f feature')
+    .option('c commit')
+    .option('p push')
+    .option('co checkout')
     .parse(process.argv)
 
   if (program.bug) {// bug 命令
@@ -54,10 +56,14 @@ ZingCMD.prototype.listening = function () {
 
   if (program.commit) {// 提交 命令
     ZingGit.checkAndCommit()
-  } 
-  
+  }
+
   if (program.push) {// 提交 命令
     ZingGit.pushZinglabsRules()
+  }
+
+  if (program.checkout) {// 提交 命令
+    ZingGit.showAndCheckout()
   }
 
   // program

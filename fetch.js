@@ -39,7 +39,7 @@ function createBranch(branchPrefix, tableData) {
   tableData.unshift(['序号', '需求/BUG编号', '标题', '链接（Command/Ctrl+鼠标左键链接可点击）']); // 注意数组索引, [0,1,2..]
   output = table(tableData, config)
   console.log(output)
-  ZingInquirer.inputBugIndex(index => {
+  ZingInquirer.inputNumRadio("请输入您要解决的 BUG 或 FEATURE 序号 :", index => {
     let bug = tableData[~~index];
     let code = bug[1];
     let title = bug[3];
@@ -65,8 +65,8 @@ function loagMyBug(queryData, fn) {
         tableData[i] = [0, '-', '-', '您没有BUG', `${zentaoBaseUrl}/zentao/`]
       }
 
-    if(fn != undefined) fn(tableData);
-    
+      if (fn != undefined) fn(tableData);
+
     })
     .catch(err => {
       console.error(err)
