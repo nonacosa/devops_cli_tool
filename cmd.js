@@ -8,7 +8,7 @@ function ZingCMD() { }
 
 let table2 = new Table2({
   head: ['功能', '命令', '缩写', '例子'],
-  colWidths: [35, 15, 5, 40]
+  colWidths: [35, 15, 10, 40]
 })
 
 table2.push(
