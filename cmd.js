@@ -12,12 +12,12 @@ let table2 = new Table2({
 })
 
 table2.push(
-  ['查看帮助', 'help', '-h', 'zingGit -h 或 zingGit --help'],
-  ['查看 「 wekan 」列表 (敬请期待)', 'feature', 'f', 'zingGit f 或 zingGit feature'],
-  ['查看 「 禅 道 」列表 ', 'bug', 'b', 'zingGit b 或 zingGit bug'],
-  ['可以自动填写 commit 信息', 'commit', 'c', 'zingGit c 或 zingGit commit'],
-  ['自动 push', 'push', 'p', 'zingGit p 或 zingGit push'],
-  ['切换分支', 'checkout', 'co', 'zingGit co 或 zingGit checkout']
+  ['查看帮助', 'help', '-h', 'zgit -h 或 zgit --help'],
+  ['查看 「 wekan 」列表 (敬请期待)', 'feature', 'f', 'zgit f 或 zgit feature'],
+  ['查看 「 禅 道 」列表 ', 'bug', 'b', 'zgit b 或 zgit bug'],
+  ['可以自动填写 commit 信息', 'commit', 'c', 'zgit c 或 zgit commit'],
+  ['自动 push', 'push', 'p', 'zgit p 或 zgit push'],
+  ['切换分支', 'checkout', 'co', 'zgit co 或 zgit checkout']
 )
 
 ZingCMD.prototype.listening = function () {
