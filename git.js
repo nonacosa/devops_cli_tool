@@ -61,7 +61,7 @@ ZingGit.prototype.checkoutBranch = function (branch, origin, bugId) {
 }
 
 //git status
-ZingGit.prototype.checkAndCommit = function (msg) {
+ZingGit.prototype.checkAndCommit = function (appendMsg) {
   let checkArr = [];
   let fileArr = [];
 
@@ -94,26 +94,17 @@ ZingGit.prototype.checkAndCommit = function (msg) {
           toCommitFilesPathArray.push(process.cwd() + '/' + files[i]);
         }
         new ZingGit().add(toCommitFilesPathArray);
-        new ZingGit().commit(toCommitFilesPathArray, msg);
+        new ZingGit().commit(toCommitFilesPathArray, null,appendMsg);
       });
 
     }
   });
 }
 
-//git add
-ZingGit.prototype.add = function (fileArr) {
-  git.add(fileArr, function (err, result) {
-
-    if (!err) {
-      console.log(result)
-    }
-  });
-}
 //git commit
-ZingGit.prototype.commit = function (fileArr, msg) {
+ZingGit.prototype.commit = function (fileArr, msg , appendMsg) {
   new ZingGit().branchInfo(Id => {
-    git.commit(msg || `fix-bug-${Id} \n http://39.104.96.233:60888/zentao/bug-view-${Id}.html `, fileArr, null, function (err, result) {
+    git.commit(msg || `fix-bug-${Id}   ${appendMsg} \n http://39.104.96.233:60888/zentao/bug-view-${Id}.html `, fileArr, null, function (err, result) {
       if (!err) {
         console.info("=========提交成功，改动如下 ：==========\n\n")
         console.log(result)
@@ -125,6 +116,17 @@ ZingGit.prototype.commit = function (fileArr, msg) {
   })
 
 }
+
+//git add
+ZingGit.prototype.add = function (fileArr) {
+  git.add(fileArr, function (err, result) {
+
+    if (!err) {
+      console.log(result)
+    }
+  });
+}
+
 
 //git branchInfo
 ZingGit.prototype.branchInfo = function (callback) {
