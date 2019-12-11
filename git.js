@@ -101,7 +101,6 @@ ZingGit.prototype.checkAndCommit = function (appendMsg) {
   });
 }
 
-
 //git commit
 ZingGit.prototype.commit = function (fileArr, msg , appendMsg) {
   new ZingGit().branchInfo((Id) => {
