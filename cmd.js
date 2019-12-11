@@ -73,20 +73,9 @@ ZingCMD.prototype.listening = function () {
     ZingGit.showAndCheckout()
   }
 
-  // program
-  //   .command('new <dir>')
-  //   .description('获取最新需求列表')
-  //   .action(function (dir, otherDirs) {
-  //     switchType(dir)
-  //     ZingFetch.getResult(queryData, 'new')
-  //   })
 
 
-  // 参数不满足两个默认去禅道找bug
-  if (process.argv.length === 2) {
-    console.warn('\n 请按照要求输入参数，帮助请看 --help \n\n 或访问：            http://39.104.73.92:81/dev-team/zingGit \n');
-    console.info(table2.toString())
-  }
+ 
 
   program.parse(process.argv)
 
