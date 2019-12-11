@@ -4,7 +4,7 @@ const git = require('simple-git')(process.cwd());
 const ZingInquirer = require('./inquirer')
 const inquirer = require('inquirer')
 const { table } = require('table')
-const zentaoBaseUrl = "http://39.104.96.233:60888"
+const ZingConf = require('./config')
 
 let currentBugId = '';
 
@@ -94,7 +94,7 @@ ZingGit.prototype.checkAndCommit = function (appendMsg) {
           toCommitFilesPathArray.push(process.cwd() + '/' + files[i]);
         }
         new ZingGit().add(toCommitFilesPathArray);
-        new ZingGit().commit(toCommitFilesPathArray, null,appendMsg);
+        new ZingGit().commit(toCommitFilesPathArray, null, appendMsg);
       });
 
     }
@@ -102,7 +102,7 @@ ZingGit.prototype.checkAndCommit = function (appendMsg) {
 }
 
 //git commit
-ZingGit.prototype.commit = function (fileArr, msg , appendMsg) {
+ZingGit.prototype.commit = function (fileArr, msg, appendMsg) {
   new ZingGit().branchInfo((Id) => {
     git.commit(msg || ` fix-bug-${Id}   ${appendMsg} \nhttp://39.104.96.233:60888/zentao/bug-view-${Id}.html  \n\n `, fileArr, null, function (err, result) {
       if (!err) {
@@ -188,7 +188,7 @@ ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
         ZingGit.prototype.merge(oldBranch, () => {
           console.info('merge 完成 ！')
           ZingGit.prototype.push(ok => {
-            if(callback != undefined) {
+            if (callback != undefined) {
               callback();
             }
           });
@@ -231,7 +231,7 @@ function selectBranch(branches) {
     let url = "";
     if (item.indexOf('fix') > -1) {
       let bugOrFeatureId = item.substring(item.lastIndexOf('-') + 1);
-      url += `${zentaoBaseUrl}/zentao/bug-view-${bugOrFeatureId}.html`
+      url += `${ZingConf.zentaoBaseUrl}/zentao/bug-view-${bugOrFeatureId}.html`
     }
     tableData.push([index++, item, url])
   })

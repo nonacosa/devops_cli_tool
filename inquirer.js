@@ -2,9 +2,9 @@
 'use strict';
 const inquirer = require('inquirer');
 var chalkPipe = require('chalk-pipe');
-const request = require('superagent')
+const request = require('superagent');
+const ZingConf = require('./config');
 
-const wenkanBaseUrl = "http://39.104.107.146"
 
 function ZingInquirer() { }
 
@@ -123,27 +123,43 @@ ZingInquirer.prototype.setCookie = function (type, callback) {
     var questions = [
       {
         type: 'input',
-        name: 'cookie',
-        message: ` \n 检测到您没有填写过 「${type}」 Cookie，或 Cookie 已经失效，请粘贴 Cookie ! \n 或手动在 /usr/local/zingGit-config.json 内进行配置 :`,
+        name: 'userMsg',
+        message: ` \n 请输入禅道用户名密码以空格隔开 :`,
       }
     ];
 
     inquirer.prompt(questions).then(answers => {
-      callback(answers.cookie);
+      let user = answers.userMsg.split(/\s+/);
+      request.post(`${ZingConf.zentaoBaseUrl}/zentao/user-login.json`)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .set('Accept', ' */*')
+        .send({ account: user[0], password: user[1] })
+        .then((res) => {
+          let ret = res.header['set-cookie'];
+          let cookies = [];
+          ret.forEach(element => {
+            let arr = element.split(";");
+            cookies.push(arr[0])
+          });
+          callback(cookies.join(";"))
+          //callback(res.body)
+        })
+        .catch(err => {
+          console.error("用户名密码错误", err)
+        })
     });
   } else if ("wekan" === type) {
     var questions = [
       {
         type: 'input',
         name: 'userMsg',
-        message: ` \n 请输入用户名密码以空格隔开 :`,
+        message: ` \n 请输入wekan用户名密码以空格隔开 :`,
       }
     ];
 
     inquirer.prompt(questions).then(answers => {
       let user = answers.userMsg.split(/\s+/);
-      console.info(user[0], user[1])
-      request.post(`${wenkanBaseUrl}/users/login`)
+      request.post(`${ZingConf.wenkanBaseUrl}/users/login`)
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .set('Accept', ' */*')
         .send({ username: user[0], password: user[1] })
@@ -151,7 +167,7 @@ ZingInquirer.prototype.setCookie = function (type, callback) {
           callback(res.body)
         })
         .catch(err => {
-          console.error('cookie 可能已经过期，请重新调整！')
+          console.error("用户名密码错误", err)
         })
     });
 
