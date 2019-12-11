@@ -1,7 +1,7 @@
 #! /usr/bin/env node  配置文件
 'use strict';
 var fs = require("fs");
-
+var request = require('superagent');
 var ZingInquirer = require("./inquirer");
 
 const CONFIG_PATH = '/usr/local/zingGit-config.json';
@@ -67,15 +67,46 @@ class ZingConfig {
     if (type == undefined || type === null) {
       type = 'chandao';
     }
-    fs.readFile(CONFIG_PATH, function (err, data) {
+    fs.readFile(CONFIG_PATH, (err, data) => {
       if (!err) {
         let Config = JSON.parse(data.toString());
-        let typeConfig = Config[type];
         // 未配置，请输入相关 cookie
-        ZingInquirer.setCookie(type, data => {
-          Config[type] = data;
-          new ZingConfig().resetConfig(JSON.stringify(Config));
-        })
+        if ("chandao" === type) {
+          ZingInquirer.inputUserMsg(" \n 请输入禅道用户名密码以空格隔开 :", (account, password) => {
+            request.post(`${this.zentaoBaseUrl}/zentao/user-login.json`)
+              .set('Content-Type', 'application/x-www-form-urlencoded')
+              .set('Accept', ' */*')
+              .send({ account, password })
+              .then((res) => {
+                let ret = res.header['set-cookie'];
+                let cookies = [];
+                ret.forEach(element => {
+                  let arr = element.split(";");
+                  cookies.push(arr[0])
+                });
+                Config[type] = cookies.join(";");
+                this.resetConfig(JSON.stringify(Config));
+                //callback(res.body)
+              })
+              .catch(err => {
+                console.error("用户名密码错误", err)
+              })
+          })
+        } else if ("wekan" === type) {
+          ZingInquirer.inputUserMsg(" \n 请输入禅道用户名密码以空格隔开 :", (username, password) => {
+            request.post(`${this.wenkanBaseUrl}/users/login`)
+              .set('Content-Type', 'application/x-www-form-urlencoded')
+              .set('Accept', ' */*')
+              .send({ username, password })
+              .then(res => {
+                Config[type] = res.body;
+                this.resetConfig(JSON.stringify(Config));
+              })
+              .catch(err => {
+                console.error("用户名密码错误", err)
+              })
+          })
+        }
       }
     });
   }

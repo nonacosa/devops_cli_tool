@@ -2,9 +2,6 @@
 'use strict';
 const inquirer = require('inquirer');
 var chalkPipe = require('chalk-pipe');
-const request = require('superagent');
-const ZingConf = require('./config');
-
 
 function ZingInquirer() { }
 
@@ -118,63 +115,18 @@ ZingInquirer.prototype.inputNumRadio = function (title, callback) {
 }
 
 // 设置相关 Cookie
-ZingInquirer.prototype.setCookie = function (type, callback) {
-  if ("chandao" === type) {
-    var questions = [
-      {
-        type: 'input',
-        name: 'userMsg',
-        message: ` \n 请输入禅道用户名密码以空格隔开 :`,
-      }
-    ];
-
-    inquirer.prompt(questions).then(answers => {
-      let user = answers.userMsg.split(/\s+/);
-      request.post(`${ZingConf.zentaoBaseUrl}/zentao/user-login.json`)
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Accept', ' */*')
-        .send({ account: user[0], password: user[1] })
-        .then((res) => {
-          let ret = res.header['set-cookie'];
-          let cookies = [];
-          ret.forEach(element => {
-            let arr = element.split(";");
-            cookies.push(arr[0])
-          });
-          callback(cookies.join(";"))
-          //callback(res.body)
-        })
-        .catch(err => {
-          console.error("用户名密码错误", err)
-        })
-    });
-  } else if ("wekan" === type) {
-    var questions = [
-      {
-        type: 'input',
-        name: 'userMsg',
-        message: ` \n 请输入wekan用户名密码以空格隔开 :`,
-      }
-    ];
-
-    inquirer.prompt(questions).then(answers => {
-      let user = answers.userMsg.split(/\s+/);
-      request.post(`${ZingConf.wenkanBaseUrl}/users/login`)
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Accept', ' */*')
-        .send({ username: user[0], password: user[1] })
-        .then(res => {
-          callback(res.body)
-        })
-        .catch(err => {
-          console.error("用户名密码错误", err)
-        })
-    });
-
-
-  }
-
-
+ZingInquirer.prototype.inputUserMsg = function (title, callback) {
+  var questions = [
+    {
+      type: 'input',
+      name: 'userMsg',
+      message: title,
+    }
+  ];
+  inquirer.prompt(questions).then(answers => {
+    let user = answers.userMsg.split(/\s+/);
+    callback(user[0], user[1])
+  });
 }
 
 
