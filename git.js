@@ -185,10 +185,12 @@ ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
         console.error(err)
         ZingGit.prototype.merge(oldBranch, () => {
           console.info('merge 完成 ！')
-          ZingGit.prototype.push();
-          if (callback != undefined) {
-            callback();
-          }
+          ZingGit.prototype.push(ok => {
+            if(callback != undefined) {
+              callback();
+            }
+          });
+
         })
       })
 
