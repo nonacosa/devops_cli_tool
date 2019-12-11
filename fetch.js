@@ -51,7 +51,6 @@ function loagMyBug(queryData, fn) {
     .query(queryData)
     .set('Cookie', ZingConf.get())
     .then(res => {
-      console.info(res)
       let info = JSON.parse(JSON.parse(res.text).data)
       let bugs = info.bugs
       // 存储数据的表格
