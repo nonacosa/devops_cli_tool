@@ -104,7 +104,7 @@ ZingGit.prototype.checkAndCommit = function (appendMsg) {
 //git commit
 ZingGit.prototype.commit = function (fileArr, msg, appendMsg) {
   new ZingGit().branchInfo((Id) => {
-    git.commit(msg || ` fix-bug-${Id}   ${appendMsg} \nhttp://39.104.96.233:60888/zentao/bug-view-${Id}.html  \n\n `, fileArr, null, function (err, result) {
+    git.commit(msg || ` fix-bug-${Id}   ${appendMsg ||  ''} \nhttp://39.104.96.233:60888/zentao/bug-view-${Id}.html  \n\n `, fileArr, null, function (err, result) {
       if (!err) {
         console.info("=========提交成功，改动如下 ：==========\n\n")
         console.log(result)
