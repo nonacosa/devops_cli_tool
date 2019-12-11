@@ -26,11 +26,11 @@ function createBranch(branchPrefix, tableData) {
       },
       2: {
         alignment: 'right',
-        width: 70
+        width: 60
       },
       3: {
         alignment: 'right',
-        width: 60
+        width: 70
       }
     }
   }
