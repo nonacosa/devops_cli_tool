@@ -47,6 +47,9 @@ ZingCMD.prototype.listening = function () {
     .parse(process.argv)
 
   if (program.bug) {// bug 命令
+    if(program.args.length > 0) {
+
+    }
     ZingFetch.bug({})
   }
 
@@ -55,7 +58,11 @@ ZingCMD.prototype.listening = function () {
   }
 
   if (program.commit) {// 提交 命令
-    ZingGit.checkAndCommit()
+    let msg = null;
+    if(program.args.length > 0) {
+      msg = program.args[0]
+    }
+    ZingGit.checkAndCommit(msg)
   }
 
   if (program.push) {// 提交 命令
