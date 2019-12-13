@@ -23,6 +23,7 @@
     "commander": "^2.13.0",
     "inquirer": "^7.0.0",
     "simple-git": "^1.126.0",
+    "sqlite3": "^4.1.1",
     "superagent": "^3.8.2",
     "table": "^4.0.2"
   }
