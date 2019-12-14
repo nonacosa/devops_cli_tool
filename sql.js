@@ -1,6 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 
-var db = new sqlite3.Database(process.cwd() + "/zgit.db", function(e){
+var db = new sqlite3.Database(__dirname + "/zgit.db", function(e){
 //  if (err) throw err;
 });
 
