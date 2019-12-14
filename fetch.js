@@ -47,48 +47,49 @@ function createBranch(branchPrefix, tableData) {
 }
 
 function loagMyBug(queryData, fn) {
-  ZingConf.get('chandao',cookie => {
+  ZingConf.get('chandao', cookie => {
 
     request.get(`${ZingConf.zentaoBaseUrl}/zentao/my-bug.json`)
-    .query(queryData)
-    .set('Cookie', cookie)
-    .then(res => {
-      let info = JSON.parse(JSON.parse(res.text).data)
-      let bugs = info.bugs
-      // 存储数据的表格
-      let tableData = []
-      for (let i = 0; i < bugs.length; i++) {
-        tableData[i] = [i + 1, bugs[i].id, bugs[i].title, `${ZingConf.zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
-      }
-      if (bugs.length == 0) {
-        tableData[i] = [0, '-', '-', '您没有BUG', `${ZingConf.zentaoBaseUrl}/zentao/`]
-      }
+      .query(queryData)
+      .set('Cookie', cookie)
+      .then(res => {
+        let info = JSON.parse(JSON.parse(res.text).data)
+        let bugs = info.bugs
+        // 存储数据的表格
+        let tableData = []
+        for (let i = 0; i < bugs.length; i++) {
+          tableData[i] = [i + 1, bugs[i].id, bugs[i].title, `${ZingConf.zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
+        }
+        if (bugs.length == 0) {
+          tableData[i] = [0, '-', '-', '您没有BUG', `${ZingConf.zentaoBaseUrl}/zentao/`]
+        }
 
-      if (fn != undefined) fn(tableData);
+        if (fn != undefined) fn(tableData);
 
-    })
-    .catch(err => {
-      console.error(err)
-      console.warn('cookie 可能已经过期，请重新调整！')
-      ZingConf.check()
-    })
+      })
+      .catch(err => {
+        console.error(err)
+        console.warn('cookie 可能已经过期，请重新调整！')
+        ZingConf.check()
+      })
   })
-  
+
 }
 
 async function loadMyFeature(fn) {
   let userId = ""
-  
+
   let userData = await ZingConf.get("wekan");
-  if(userData == '') {
+  if (userData == '') {
     ZingConf.check("wekan")
+    return
   }
   userData = JSON.parse(userData)
   if (typeof userData === "object") {
     userId = userData.id;
-    
+
   }
-  
+
   const boards = await wekanRequest(`/api/users/${userId}/boards`);
   let boardList = [];
   for (let i = 0; i < boards.length; i++) {
@@ -143,7 +144,7 @@ function isEmpty(val) {
 
 async function wekanRequest(path, fn) {
   const promise = new Promise((resolve, reject) => {
-    ZingConf.get("wekan",userData => {
+    ZingConf.get("wekan", userData => {
       userData = JSON.parse(userData)
       let authorization = "";
       if (typeof userData === "object") {
@@ -164,8 +165,8 @@ async function wekanRequest(path, fn) {
           reject(err)
           console.error('cookie 可能已经过期，请重新调整！')
         })
-      });
-    
+    });
+
   });
   return promise
 }
@@ -177,7 +178,7 @@ function switchType(type) {
 }
 
 module.exports = {
-  
+
   bug(queryData) {
     loagMyBug(queryData, res => {
       createBranch("fix-bug", res)
