@@ -15,20 +15,19 @@ function createBranch(branchPrefix, tableData) {
   let config = {
     columns: {
       0: {
-        alignment: 'left',
-        width: 5
+        alignment: 'center',
+        width: 4
       },
       1: {
-        alignment: 'right',
-        width: 10
+        alignment: 'center',
+        width: 8
       },
       2: {
-        alignment: 'right',
-        width: 60
+        alignment: 'left',
+        width: 35
       },
       3: {
-        alignment: 'right',
-        width: 70
+        alignment: 'left'
       }
     }
   }
@@ -46,48 +45,43 @@ function createBranch(branchPrefix, tableData) {
   });
 }
 
-function loagMyBug(queryData, fn) {
-  ZingConf.get('chandao', cookie => {
-
-    request.get(`${ZingConf.zentaoBaseUrl}/zentao/my-bug.json`)
-      .query(queryData)
-      .set('Cookie', cookie)
-      .then(res => {
-        let info = JSON.parse(JSON.parse(res.text).data)
-        let bugs = info.bugs
-        // 存储数据的表格
-        let tableData = []
-        for (let i = 0; i < bugs.length; i++) {
-          tableData[i] = [i + 1, bugs[i].id, bugs[i].title, `${ZingConf.zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
-        }
-        if (bugs.length == 0) {
-          tableData[i] = [0, '-', '-', '您没有BUG', `${ZingConf.zentaoBaseUrl}/zentao/`]
-        }
-
-        if (fn != undefined) fn(tableData);
-
-      })
-      .catch(err => {
-        console.error(err)
-        console.warn('cookie 可能已经过期，请重新调整！')
-        ZingConf.check()
-      })
-  })
-
+async function loagMyBug(queryData, fn) {
+  let cookie = await ZingConf.getAuthorization();
+  request.get(`${ZingConf.zentaoBaseUrl}/zentao/my-bug.json`)
+    .query(queryData)
+    .set('Cookie', cookie)
+    .then(res => {
+      let info = JSON.parse(JSON.parse(res.text).data)
+      let bugs = info.bugs
+      // 存储数据的表格
+      let tableData = []
+      for (let i = 0; i < bugs.length; i++) {
+        tableData[i] = [i + 1, bugs[i].id, bugs[i].title, `${ZingConf.zentaoBaseUrl}/zentao/bug-view-${bugs[i].id}.html`]
+      }
+      if (bugs.length == 0) {
+        tableData[i] = [0, '-', '-', '您没有BUG', `${ZingConf.zentaoBaseUrl}/zentao/`]
+      }
+      fn(tableData);
+    })
+    .catch(async err => {
+      //console.info(err)
+      await ZingConf.login();
+      loagMyBug(queryData, fn)
+      //console.warn('cookie 可能已经过期，请重新调整！')
+    })
 }
 
 async function loadMyFeature(fn) {
   let userId = ""
 
-  let userData = await ZingConf.get("wekan");
+  let userData = await ZingConf.getAuthorization("wekan");
   if (userData == '') {
-    ZingConf.check("wekan")
-    return
+    await ZingConf.login("wekan")
+    userData = await ZingConf.getAuthorization("wekan");
   }
   userData = JSON.parse(userData)
   if (typeof userData === "object") {
     userId = userData.id;
-
   }
 
   const boards = await wekanRequest(`/api/users/${userId}/boards`);
@@ -142,43 +136,37 @@ function isEmpty(val) {
   return typeof val === "undefined" || val === null || val === "";
 }
 
-async function wekanRequest(path, fn) {
+async function wekanRequest(path) {
+  let userData = await ZingConf.getAuthorization("wekan");
+
   const promise = new Promise((resolve, reject) => {
-    ZingConf.get("wekan", userData => {
-      userData = JSON.parse(userData)
-      let authorization = "";
-      if (typeof userData === "object") {
-        authorization = userData.token;
-      }
-      request.get(ZingConf.wenkanBaseUrl + path)
-        .set('Authorization', `Bearer ${authorization}`)
-        .then(res => {
-          if (res.body.statusCode === 401) {
-            console.error(res.body.statusCode === 401)
-            ZingConf.check("wekan")
-          } else {
-            resolve(res.body)
-          }
-
-        })
-        .catch(err => {
-          reject(err)
-          console.error('cookie 可能已经过期，请重新调整！')
-        })
-    });
-
+    userData = JSON.parse(userData)
+    let authorization = "";
+    if (typeof userData === "object") {
+      authorization = userData.token;
+    }
+    request.get(ZingConf.wenkanBaseUrl + path)
+      .set('Authorization', `Bearer ${authorization}`)
+      .then(async res => {
+        if (res.body.statusCode === 401) {
+          await ZingConf.login("wekan")
+        } else {
+          resolve(res.body)
+        }
+      })
+      .catch(async err => {
+        reject(err)
+        await ZingConf.login("wekan")
+      })
   });
   return promise
 }
-
-
 
 function switchType(type) {
   // queryData.xxx
 }
 
 module.exports = {
-
   bug(queryData) {
     loagMyBug(queryData, res => {
       createBranch("fix-bug", res)
