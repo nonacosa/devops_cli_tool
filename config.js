@@ -11,8 +11,8 @@ const CONFIG_PATH = '/usr/local/zingGit-config.json';
 
 class ZingConfig {
   constructor() {
-    this.wenkanBaseUrl = "http://39.104.107.146";
-    this.zentaoBaseUrl = "http://39.104.96.233:60888"
+    this.wenkanBaseUrl = "http://wekan.qmenhu.com";
+    this.zentaoBaseUrl = "http://bug.qmenhu.com"
   }
 
   writeConfig(config) {
