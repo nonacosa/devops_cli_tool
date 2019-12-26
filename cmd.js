@@ -18,7 +18,7 @@ table2.push(
   ['可以自动填写 commit 信息',       'commit',      'c',    'zgit c 或 zgit commit 后面可跟 msg:「zgit c 这是一次提交」 '],
   ['自动 push',                    'push',        'p',    'zgit p 或 zgit push'],
   ['切换分支',                      'checkout',    'co',   'zgit co 或 zgit checkout'],
-  ['流产上次的merge',               'mergeAbort',  'ma',   'zgit ma 或 zgit checkout  等同于 git merge --abort']
+  ['流产上次的merge',               'mergeAbort',  'ma',   'zgit ma 或 zgit mergeAbort  等同于 git merge --abort']
 )
 
 ZingCMD.prototype.listening = function () {
