@@ -149,18 +149,23 @@ ZingGit.prototype.branchInfo = function (callback) {
 
 //git push
 ZingGit.prototype.push = function (callback) {
-  git.pull('origin', 'master', { '--no-rebase': null }, (err, res) => {
+  git.fetch('origin','master',(err,res) => {
     if(!err) {
-      ZingGit.prototype.branchInfo((id, name) => {
-        git.push('origin', name, (err, res) => {
-          console.info('push 分支 %s 到远程成功', name);
-          if (callback != undefined) {
-            callback(name)
-          }
-        });
+      git.pull('origin', 'master', { '--no-rebase': null }, (err, res) => {
+        if(!err) {
+          ZingGit.prototype.branchInfo((id, name) => {
+            git.push('origin', name, (err, res) => {
+              console.info('push 分支 %s 到远程成功', name);
+              if (callback != undefined) {
+                callback(name)
+              }
+            });
+          })
+        }
       })
     }
-  })
+  }
+  
 
 
 }
