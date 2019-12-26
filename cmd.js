@@ -8,13 +8,13 @@ function ZingCMD() { }
 
 let table2 = new Table2({
   head: ['功能', '命令', '缩写', '例子'],
-  colWidths: [35, 15, 10, 65]
+  colWidths: [35, 15, 10, 80]
 })
 
 table2.push(
   ['查看帮助',                      'help',       '-h',  'zgit -h 或 zgit --help'],
   ['查看 「 wekan 」列表 (敬请期待)', 'feature',     'f',   'zgit f 或 zgit feature'],
-  ['查看 「 禅 道 」列表 ',          'bug',         'b',    'zgit b 或 zgit bug 后面可以跟 branch 名称 zgit b xxx「一般用于没有对应 bug 的情况」'],
+  ['查看 「 禅 道 」列表 ',          'bug',         'b',    'zgit b 或 zgit bug 后面可以跟自定义名称:zgit b xxx「一般用于没 bug 的情况」'],
   ['可以自动填写 commit 信息',       'commit',      'c',    'zgit c 或 zgit commit 后面可跟 msg:「zgit c 这是一次提交」 '],
   ['自动 push',                    'push',        'p',    'zgit p 或 zgit push'],
   ['切换分支',                      'checkout',    'co',   'zgit co 或 zgit checkout'],
@@ -29,7 +29,7 @@ ZingCMD.prototype.listening = function () {
 
   program.on('--help', function () {
     console.info('')
-    console.info('命令列表')
+    console.info('命令列表:' + toolsInfo.version)
     console.info(table2.toString())
   });
 
