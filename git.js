@@ -164,6 +164,7 @@ ZingGit.prototype.push = function (callback) {
         }
       })
     }
+  })
   
 
 
