@@ -177,6 +177,15 @@ ZingGit.prototype.merge = function (oldBranch, callback) {
 
 }
 
+//git merge --abort
+ZingGit.prototype.mergeAbort = function (callback) {
+  git.merge('--abort', (err,res) => {
+    if(!err) {
+        console.info('git merge --abort 执行成功 👌')
+    }
+  })
+}
+
 
 //git checkout and pull 
 ZingGit.prototype.checkoutDev = function (oldBranch, callback) {

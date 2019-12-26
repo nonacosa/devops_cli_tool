@@ -43,7 +43,8 @@ ZingCMD.prototype.listening = function () {
     .option('f feature')
     .option('c commit')
     .option('p push')
-    .option('co checkout')
+    .option('co mergeAbort')
+    .option('ma mergeAbout')
     .parse(process.argv)
 
   if (program.bug) {// bug 命令
@@ -76,6 +77,12 @@ ZingCMD.prototype.listening = function () {
   if (program.checkout) {// 提交 命令
     ZingGit.showAndCheckout()
   }
+
+
+  if (program.mergeAbort) {// 提交 命令
+    ZingGit.mergeAbort()
+  }
+
 
 
 
