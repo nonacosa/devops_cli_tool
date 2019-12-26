@@ -14,7 +14,7 @@ let table2 = new Table2({
 table2.push(
   ['查看帮助',                      'help',      '-h',  'zgit -h 或 zgit --help'],
   ['查看 「 wekan 」列表 (敬请期待)', 'feature',   'f',   'zgit f 或 zgit feature'],
-  ['查看 「 禅 道 」列表 ',          'bug',       'b',    'zgit b 或 zgit bug'],
+  ['查看 「 禅 道 」列表 ',          'bug',       'b',    'zgit b 或 zgit bug 后面可以跟 branch 名称 zgit b xxx「一般用于没有对应 bug 的情况」'],
   ['可以自动填写 commit 信息',       'commit',    'c',    'zgit c 或 zgit commit 后面可跟 msg:「zgit c 这是一次提交」 '],
   ['自动 push',                    'push',      'p',    'zgit p 或 zgit push'],
   ['切换分支',                      'checkout',  'co',   'zgit co 或 zgit checkout']
@@ -47,8 +47,12 @@ ZingCMD.prototype.listening = function () {
     .parse(process.argv)
 
   if (program.bug) {// bug 命令
+    let branchName = null;
     if(program.args.length > 0) {
-
+      branchName = program.args[0]
+      ZingGit.checkoutBranch(`fix-bug-${branchName}`, null);
+      console.log("您自定义的分支名称：fix-bug-%s \n", branchName)
+      return;
     }
     ZingFetch.bug({})
   }
