@@ -145,26 +145,37 @@ ZingGit.prototype.branchInfo = function (callback) {
   })
 }
 
-
-
-//git push
-ZingGit.prototype.push = function (callback) {
-  git.fetch('origin','master',(err,res) => {
+//git fetch and pull
+ZingGit.prototype.fetchAndPull = function (branch,callback) {
+  git.fetch('origin',branch,(err,res) => {
     if(!err) {
-      git.pull('origin', 'master', { '--no-rebase': null }, (err, res) => {
+      git.pull('origin', branch, { '--no-rebase': null }, (err, res) => {
         if(!err) {
-          ZingGit.prototype.branchInfo((id, name) => {
-            git.push('origin', name, (err, res) => {
-              console.info('push 分支 %s 到远程成功', name);
-              if (callback != undefined) {
-                callback(name)
-              }
-            });
-          })
+            if (callback != undefined) {
+              callback(true)
+            }
         }
       })
     }
   })
+}
+
+
+//git push
+ZingGit.prototype.push = function (callback) {
+  ZingGit.prototype.fetchAndPull('master', ok => {
+    if(ok) {
+      ZingGit.prototype.branchInfo((id, name) => {
+        git.push('origin', name, (err, res) => {
+          console.info('push 分支 %s 到远程成功', name);
+          if (callback != undefined) {
+            callback(name)
+          }
+        });
+      })
+    }
+  })
+   
   
 
 
@@ -219,15 +230,22 @@ ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
 }
 
 ZingGit.prototype.pushZinglabsRules = function (callback) {
-  //先把当前分支推到远程
-  ZingGit.prototype.push(fixBranchName => {
-    ZingGit.prototype.checkoutDev(fixBranchName, () => {
-      console.info('流程完成，请检查！')
-      if (callback != undefined) {
-        callback()
-      }
+  ZingGit.prototype.branchInfo((id, name) => {
+    //先 fetch pull 房钱分支
+    ZingGit.prototype.fetchAndPull(name, ok => {
+      //把当前分支推到远程
+      ZingGit.prototype.push(fixBranchName => {
+        ZingGit.prototype.checkoutDev(fixBranchName, () => {
+          console.info('流程完成，请检查！')
+          if (callback != undefined) {
+            callback()
+          }
+        })
+      });
     })
-  });
+  })
+  
+  
 }
 
 ZingGit.prototype.showAndCheckout = function () {
