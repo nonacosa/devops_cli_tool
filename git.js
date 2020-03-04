@@ -233,6 +233,7 @@ ZingGit.prototype.pushZinglabsRules = function (callback) {
   ZingGit.prototype.branchInfo((id, name) => {
     //先 fetch pull 房钱分支
     ZingGit.prototype.fetchAndPull(name, ok => {
+      console.info('更新 %s  分支完成 ！',name)
       //把当前分支推到远程
       ZingGit.prototype.push(fixBranchName => {
         ZingGit.prototype.checkoutDev(fixBranchName, () => {
