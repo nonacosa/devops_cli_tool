@@ -63,6 +63,7 @@ ZingCMD.prototype.listening = function () {
     ZingFetch.feature({})
   }
 
+  
   if (program.commit) {// 提交 命令
     let msg = null;
     if(program.args.length > 0) {

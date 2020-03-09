@@ -5,6 +5,7 @@ var request = require('superagent');
 var ZingInquirer = require("./inquirer");
 var ZingSql = require("./sql");
 
+
 const CONFIG_PATH = '/usr/local/zingGit-config.json';
 // const DIR_USR = '/usr/';
 // const DIR_LOCAL = '/usr/local/';

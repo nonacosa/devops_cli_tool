@@ -148,7 +148,10 @@ ZingGit.prototype.branchInfo = function (callback) {
 //git fetch and pull
 ZingGit.prototype.fetchAndPull = function (branch,callback) {
   git.fetch('origin',branch,(err,res) => {
-    if(!err) {
+    if(err) {
+      console.info("该分支可能未提交，绕过 git fetch")
+    }
+    // if(!err) {
       git.pull('origin', branch, { '--no-rebase': null }, (err, res) => {
         if(!err) {
             if (callback != undefined) {
@@ -156,7 +159,7 @@ ZingGit.prototype.fetchAndPull = function (branch,callback) {
             }
         }
       })
-    }
+    // }
   })
 }
 
@@ -225,6 +228,7 @@ ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
       }
     });
   })
+  
   
 
 }

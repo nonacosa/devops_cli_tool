@@ -16,6 +16,7 @@ ZingSql.prototype.init = function (callback) {
                    type                TEXT    NOT NULL
         )`);
 
+        
         // 存储 bug 的表
         // type 'close' 已关闭
         db.run(`  CREATE TABLE IF NOT EXISTS bug(
