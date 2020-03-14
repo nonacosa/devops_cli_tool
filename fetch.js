@@ -1,7 +1,10 @@
 #! /usr/bin/env node  自定义爬取内容
+
 'use strict';
 const request = require('superagent')
-const { table } = require('table')
+const {
+  table
+} = require('table')
 
 const ZingConf = require('./config')
 const ZingInquirer = require('./inquirer')
@@ -71,6 +74,32 @@ async function loagMyBug(queryData, fn) {
     })
 }
 
+async function loagMyTask(queryData, fn) {
+  let cookie = await ZingConf.getAuthorization();
+  request.get(`${ZingConf.zentaoBaseUrl}/zentao/my-task.json`)
+    .query(queryData)
+    .set('Cookie', cookie)
+    .then(res => {
+      let info = JSON.parse(JSON.parse(res.text).data)
+      let tasks = info.tasks
+      // 存储数据的表格
+      let tableData = []
+      for (let i = 0; i < tasks.length; i++) {
+        tableData[i] = [i + 1, tasks[i].id, tasks[i].title, `${ZingConf.zentaoBaseUrl}/zentao/task-view-${tasks[i].id}.html`]
+      }
+      if (tasks.length == 0) {
+        tableData[i] = [0, '-', '-', '您没有任务', `${ZingConf.zentaoBaseUrl}/zentao/`]
+      }
+      fn(tableData);
+    })
+    .catch(async err => {
+      //console.info(err)
+      await ZingConf.login();
+      loagMyBug(queryData, fn)
+      //console.warn('cookie 可能已经过期，请重新调整！')
+    })
+}
+
 async function loadMyFeature(fn) {
   let userId = ""
 
@@ -93,7 +122,10 @@ async function loadMyFeature(fn) {
       for (let j = 0; j < lists.length; j++) {
         const list = lists[j];
         if (!isEmpty(list) && isUncommitFeature(list.title)) {
-          boardList.push({ boardId: board._id, listId: list._id })
+          boardList.push({
+            boardId: board._id,
+            listId: list._id
+          })
         }
       }
     }
@@ -105,7 +137,11 @@ async function loadMyFeature(fn) {
     let listId = boardList[i].listId;
     const cards = await wekanRequest(`/api/boards/${boardId}/lists/${listId}/cards`);
     for (let j = 0; j < cards.length; j++) {
-      cardList.push({ boardId, listId, cardId: cards[j]._id })
+      cardList.push({
+        boardId,
+        listId,
+        cardId: cards[j]._id
+      })
     }
   }
 
@@ -170,6 +206,11 @@ module.exports = {
   bug(queryData) {
     loagMyBug(queryData, res => {
       createBranch("fix-bug", res)
+    });
+  },
+  task(queryData) {
+    loagMyTask(queryData, res => {
+      createBranch("fix-task", res)
     });
   },
   feature() {
