@@ -3,12 +3,14 @@
 const git = require('simple-git')(process.cwd());
 const ZingInquirer = require('./inquirer')
 const inquirer = require('inquirer')
-const { table } = require('table')
+const {
+  table
+} = require('table')
 const ZingConf = require('./config')
 
 let currentBugId = '';
 
-function ZingGit() { }
+function ZingGit() {}
 
 // rebase 比较适合公司场景 http://gitbook.liuhui998.com/4_2.html
 
@@ -69,7 +71,10 @@ ZingGit.prototype.checkAndCommit = function (appendMsg) {
     if (changeArr.length > 0) {
       checkArr.push(new inquirer.Separator(` = ${type} = `))
       for (var i = 0; i < changeArr.length; i++) {
-        checkArr.push({ name: changeArr[i], checked: true })
+        checkArr.push({
+          name: changeArr[i],
+          checked: true
+        })
       }
     }
   }
@@ -146,19 +151,25 @@ ZingGit.prototype.branchInfo = function (callback) {
 }
 
 //git fetch and pull
-ZingGit.prototype.fetchAndPull = function (branch,callback) {
-  git.fetch('origin',branch,(err,res) => {
-    if(err) {
-      console.info("该分支可能未提交，绕过 git fetch")
+ZingGit.prototype.fetchAndPull = function (branch, callback) {
+  git.fetch('origin', branch, (err, res) => {
+
+    if (err) {
+      console.info("该分支可能未提交， git fetch 未检测到 origin 存在分支：%s", branch)
     }
     // if(!err) {
-      git.pull('origin', branch, { '--no-rebase': null }, (err, res) => {
-        if(!err) {
-            if (callback != undefined) {
-              callback(true)
-            }
-        }
-      })
+    git.pull('origin', branch, {
+      '--no-rebase': null
+    }, (err, res) => {
+      console.log("-----")
+
+      if (err) {
+        console.info("该分支可能未提交， git pull 未检测到 origin 存在分支：%s", branch)
+      }
+      if (callback != undefined) {
+        callback(true)
+      }
+    })
     // }
   })
 }
@@ -167,7 +178,7 @@ ZingGit.prototype.fetchAndPull = function (branch,callback) {
 //git push
 ZingGit.prototype.push = function (callback) {
   ZingGit.prototype.fetchAndPull('master', ok => {
-    if(ok) {
+    if (ok) {
       ZingGit.prototype.branchInfo((id, name) => {
         git.push('origin', name, (err, res) => {
           console.info('push 分支 %s 到远程成功', name);
@@ -178,8 +189,8 @@ ZingGit.prototype.push = function (callback) {
       })
     }
   })
-   
-  
+
+
 
 
 }
@@ -198,22 +209,24 @@ ZingGit.prototype.merge = function (oldBranch, callback) {
 
 //git merge --abort
 ZingGit.prototype.mergeAbort = function (callback) {
-  git.merge(['--abort'], (err,res) => {
-    if(!err) {
-        console.info('git merge --abort 执行成功 👌')
-    }  
+  git.merge(['--abort'], (err, res) => {
+    if (!err) {
+      console.info('git merge --abort 执行成功 👌')
+    }
   })
 }
 
 
 //git checkout and pull 
 ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
-  git.fetch('origin','dev',(err,res) => {
+  git.fetch('origin', 'dev', (err, res) => {
     git.checkout('dev', (err, res) => {
       if (!err) {
         console.info('checkout 分支 dev 到远程成功 ！\n');
         console.info('准备从 origin 更新  dev  --no-rebase ... \n');
-        git.pull('origin', 'dev', { '--no-rebase': null }, (err, res) => {
+        git.pull('origin', 'dev', {
+          '--no-rebase': null
+        }, (err, res) => {
           ZingGit.prototype.merge(oldBranch, () => {
             console.info('merge 完成 ！')
             ZingGit.prototype.push(ok => {
@@ -228,8 +241,8 @@ ZingGit.prototype.checkoutDev = function (oldBranch, callback) {
       }
     });
   })
-  
-  
+
+
 
 }
 
@@ -237,7 +250,7 @@ ZingGit.prototype.pushZinglabsRules = function (callback) {
   ZingGit.prototype.branchInfo((id, name) => {
     //先 fetch pull 房钱分支
     ZingGit.prototype.fetchAndPull(name, ok => {
-      console.info('更新 %s  分支完成 ！',name)
+      console.info('更新 %s  分支完成 ！', name)
       //把当前分支推到远程
       ZingGit.prototype.push(fixBranchName => {
         ZingGit.prototype.checkoutDev(fixBranchName, () => {
@@ -249,8 +262,8 @@ ZingGit.prototype.pushZinglabsRules = function (callback) {
       });
     })
   })
-  
-  
+
+
 }
 
 ZingGit.prototype.showAndCheckout = function () {
@@ -316,6 +329,3 @@ function selectBranch(branches) {
 
 
 module.exports = new ZingGit();
-
-
-
