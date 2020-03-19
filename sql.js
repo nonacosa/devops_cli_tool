@@ -90,10 +90,11 @@ ZingSql.prototype.getUser = function (type, callback) {
 
 
 ZingSql.prototype.initDB = function (type, callback) {
+    let dbPath = process.cwd() + '/zgit.db';
     try {
-        fs.exists("zgit.db", function(exists) {
+        fs.exists(dbPath, function(exists) {
             if(exists) {
-                fs.unlinkSync("zgit.db",(e) => {
+                fs.unlinkSync(dbPath,(e) => {
                     ZingSql.prototype.init(() => {
                         console.info("初始化用户配置成功！")
                     })
