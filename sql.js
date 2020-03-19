@@ -1,5 +1,5 @@
 var sqlite3 = require('sqlite3').verbose();
-
+var fs = require('fs');
 var db = new sqlite3.Database(__dirname + "/zgit.db", function (e) {
     //  if (err) throw err;
 });
@@ -7,7 +7,6 @@ var db = new sqlite3.Database(__dirname + "/zgit.db", function (e) {
 function ZingSql() { }
 ZingSql.prototype.init = function (callback) {
     db.serialize(function () {
-
         // 存贮用户信息的表    type 'chandao' || 'wekan' 
         db.run(`  CREATE TABLE IF NOT EXISTS user(
                    name                TEXT    NOT NULL,
@@ -88,6 +87,32 @@ ZingSql.prototype.getUser = function (type, callback) {
 
     });
 }
+
+
+ZingSql.prototype.initDB = function (type, callback) {
+    try {
+        fs.exists("zgit.db", function(exists) {
+            if(exists) {
+                fs.unlinkSync("zgit.db",(e) => {
+                    ZingSql.prototype.init(() => {
+                        console.info("初始化用户配置成功！")
+                    })
+                })
+               
+            }
+           
+        })
+    } catch(err) {
+        console.log(err)
+        if (err.errno !== process.ENOENT && err.code !== 'ENOENT' && err.syscall !== 'unlink') {
+            console.error("删除数据库失败 !",err)
+            throw err;
+        }
+    }
+    
+}
+
+
 
 
 // new ZingSql().insert('user',["","","","chandao"],() => {

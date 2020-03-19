@@ -4,6 +4,7 @@ const Table2 = require('cli-table2')
 const toolsInfo = require('./package.json')
 const ZingFetch = require('./fetch')
 const ZingGit = require('./git')
+const ZingSQL = require('./sql')
 
 function ZingCMD() {}
 
@@ -17,6 +18,7 @@ table2.push(
   ['查看 「 wekan 」列表 (敬请期待)', 'feature', 'f', 'zgit f 或 zgit feature'],
   ['查看 「 禅 道 」bug列表 ', 'bug', 'b', 'zgit b 或 zgit bug 后面可以跟自定义名称:zgit b xxx「一般用于没 bug 的情况」'],
   ['查看 「 禅 道 」任务列表 ', 'task', 't', 'zgit t 或 zgit task 后面可以跟自定义名称:zgit t xxx「一般用于没 bug 的情况」'],
+  ['初始化 zgit 用户配置 ', 'clear', 'cr', 'zgit cr 或 zgit clear '],
   ['可以自动填写 commit 信息', 'commit', 'c', 'zgit c 或 zgit commit 后面可跟 msg:「zgit c 这是一次提交」 '],
   ['自动 push', 'push', 'p', 'zgit p 或 zgit push'],
   ['切换分支', 'checkout', 'co', 'zgit co 或 zgit checkout'],
@@ -46,6 +48,7 @@ ZingCMD.prototype.listening = function () {
     .option('t task')
     .option('f feature')
     .option('c commit')
+    .option('cr clear')
     .option('p push')
     .option('co checkout')
     .option('ma mergeAbort')
@@ -95,6 +98,10 @@ ZingCMD.prototype.listening = function () {
 
   if (program.checkout) { // 提交 命令
     ZingGit.showAndCheckout()
+  }
+
+  if (program.clear) { // 清除配置
+    ZingSQL.initDB()
   }
 
 
